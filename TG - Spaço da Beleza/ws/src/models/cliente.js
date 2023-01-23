@@ -24,7 +24,8 @@ const cliente = new Schema({
     status:{
         type:String,
         enum:['A', 'I'],
-        require:true
+        require:true,
+        default: 'A'
     },
     dataCadastro:{
         type:Date,

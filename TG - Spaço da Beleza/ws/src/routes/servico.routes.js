@@ -1,47 +1,69 @@
 const express = require('express')
 const router = express.Router()
-const Busboy = require('busboy')
-const aws = require('../services/aws')
+const Servico = require('../models/servicos')
 
 router.post('/', async(req, res) => {
-    let busboy =  new Busboy({headers: req.header})
-    busboy.on('finish', async ()  =>{
-        try{
-            let errors = []
-            let arquivos = []
+    try{
+        const servico = await new Servico(req.body).save()
+        res.json({servico})
+    }catch (err){
+        res.json({error:true, message:err.message})
+    }
+})
 
-            // REQUISITANDO O ARQUIVO/IMAGEM DO SERVIÇO PARA O AWS
-            if(req.files && Object.keys(req.files) > 0){
-                for(let key of Object.keys(req.files)){
-                    const file = req.files[key]
-                }
-                const nameParts = file.name.split('.');
-                const fileName = `${new Date().getTime()}.${nameParts[this.name.length - 1]}`
-                const path = `servicos/${fileName}`
+//BUSCA POR ID
+router.get('/:id', async(req, res) => {
+    try{
+        const servicos = await Servico.findById(req.params.id)
+        res.json({
+            serv: [servicos].map((s) =>({label: s.nomeServico, value: s._id}))
+        })
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
+})
 
-                const response = await aws.uploadToS3()
+//LISTAR TODOS OS Servicos
+router.get('/', async(req, res) => {
+    try{
+        const servico = await Servico.find()
+        res.json({error:false, servcadastrado:servico})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
+})
 
-                if (response.error){
-                    errors.push({error:true, message: response.message})
-                }else{
-                    arquivos.push(path)
-                }
-            }
+//LISTAR TODOS OS Servicos não excluidos
+/*router.get('/a', async(req, res) => {
+    try{
+        const servico = await Servico.find()
+        console.log(servico)
+        res.json({error:false, servativo:servico})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
+})*/
 
-            if(errors.length > 0){
-                req.json(errors[0])
-                return false
-            }
+//UPDATE COM ID retornando atualizado
+router.put('/:id', async(req, res) =>{
+    try{
+        await Servico.findByIdAndUpdate(req.params.id, req.body)
+        let updServico = await Servico.findById(req.params.id)
+        res.json({error:false, updatedclient:updServico})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
+})
 
-            //CRIAR SERVIÇO
-
-            
-            //CRIAR ARQUIVO
-        }catch (err){
-            res.json({error:true, message:err.message})
-        }
-    })
-    req.pipe(busboy)
+//DELETAR POR ID
+router.delete('/:id', async(req, res) =>{
+    try{
+        await Servico.findByIdAndUpdate(req.params.id, {status: 'E'})
+        const servico = await Servico.findById(req.params.id)
+        res.json({error:false, upd:servico})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
 })
 
 module.exports = router

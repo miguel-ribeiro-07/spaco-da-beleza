@@ -8,7 +8,7 @@ const servicos = new Schema({
     },
     descricao:String,
     duracao:{
-        type:String, // duração em minutos
+        type:Number, // duração em minutos
         require:[true, 'A duração do serviço é obrigatória']
     },
     preco:{
@@ -19,7 +19,8 @@ const servicos = new Schema({
     status:{
         type:String,
         enum:['A', 'I', 'E'],// Status de excluído "E" para a não remoção do db
-        require:true
+        require:true,
+        default: "A"
     },
     dataCadastro:{
         type:Date,
@@ -28,3 +29,4 @@ const servicos = new Schema({
 })
 
 module.exports = mongoose.model('Servicos', servicos)
+
