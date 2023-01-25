@@ -11,6 +11,16 @@ router.post('/', async(req, res) => {
     }
 })
 
+//LISTAR TODOS OS Servicos
+router.get('/', async(req, res) => {
+    try{
+        const servico = await Servico.find()
+        res.json({error:false, servcadastrado:servico})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
+})
+
 //BUSCA POR ID
 router.get('/:id', async(req, res) => {
     try{
@@ -22,27 +32,6 @@ router.get('/:id', async(req, res) => {
         res.json({error:true, message:err.message})
     }
 })
-
-//LISTAR TODOS OS Servicos
-router.get('/', async(req, res) => {
-    try{
-        const servico = await Servico.find()
-        res.json({error:false, servcadastrado:servico})
-    }catch(err){
-        res.json({error:true, message:err.message})
-    }
-})
-
-//LISTAR TODOS OS Servicos não excluidos
-/*router.get('/a', async(req, res) => {
-    try{
-        const servico = await Servico.find()
-        console.log(servico)
-        res.json({error:false, servativo:servico})
-    }catch(err){
-        res.json({error:true, message:err.message})
-    }
-})*/
 
 //UPDATE COM ID retornando atualizado
 router.put('/:id', async(req, res) =>{
@@ -61,6 +50,16 @@ router.delete('/:id', async(req, res) =>{
         await Servico.findByIdAndUpdate(req.params.id, {status: 'E'})
         const servico = await Servico.findById(req.params.id)
         res.json({error:false, upd:servico})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
+})
+
+//RECEBE OS FILTROS DE DADOS POR FILTERS
+router.post('/filter', async(req, res) =>{
+    try{
+        const filtServicos = await Servico.find(req.body.filters)
+        res.json({error:false, filtServicos})
     }catch(err){
         res.json({error:true, message:err.message})
     }

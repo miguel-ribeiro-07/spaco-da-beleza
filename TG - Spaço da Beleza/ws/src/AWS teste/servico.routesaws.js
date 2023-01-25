@@ -3,7 +3,7 @@ const router = express.Router()
 const Busboy = require('busboy')
 const Servico = require('../models/servicos')
 const Arquivo = require('../models/arquivo')
-const aws = require('../services/aws')
+const aws = require('./aws')
 
 //ROTA RECEBIMENTO FORMDATA
 router.post('/', async(req, res) => {

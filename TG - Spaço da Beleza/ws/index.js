@@ -20,6 +20,8 @@ app.set('port', 8000);
 //ROUTES
 app.use('/cliente', require('./src/routes/cliente.routes'))
 app.use('/servico', require('./src/routes/servico.routes'))
+app.use('/horario', require('./src/routes/horario.routes'))
+app.use('/agendamento', require('./src/routes/agendamento.routes'))
 
 app.listen(app.get('port'),  () => {
     console.log(`WS está escutando e retornando na porta ${app.get('port')}`)
