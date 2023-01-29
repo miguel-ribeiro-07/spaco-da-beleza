@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const horarios = new Schema ({
-    servicosId:[{ // Vários ID's de serviços dentro de um array
+    servicoId:[{ // Vários ID's de serviços dentro de um array
         type: mongoose.Types.ObjectId,
         ref:'Servicos',
         require:true

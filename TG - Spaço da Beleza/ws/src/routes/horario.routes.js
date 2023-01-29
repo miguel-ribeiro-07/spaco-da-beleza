@@ -15,7 +15,7 @@ router.post('/', async(req, res) => {
 //BUSCA POR ID
 router.get('/:id', async(req, res) => {
     try{
-        const horario = await Horario.findById(req.params.id).populate({path:'servicosId', select:'-dataCadastro'})
+        const horario = await Horario.findById(req.params.id).populate({path:'servicoId', select:'-dataCadastro'})
         res.json({horario})
     }catch(err){
         res.json({error:true, message:err.message})

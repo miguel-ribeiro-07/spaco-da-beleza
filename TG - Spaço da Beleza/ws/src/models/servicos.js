@@ -8,7 +8,7 @@ const servicos = new Schema({
     },
     descricao:String,
     duracao:{
-        type:Number, // duração em minutos
+        type:Date, // duração em minutos
         require:[true, 'A duração do serviço é obrigatória']
     },
     preco:{

@@ -11,17 +11,7 @@ router.post('/', async(req, res) => {
     }
 })
 
-//LISTAR TODOS OS Servicos
-router.get('/', async(req, res) => {
-    try{
-        const servico = await Servico.find()
-        res.json({error:false, servcadastrado:servico})
-    }catch(err){
-        res.json({error:true, message:err.message})
-    }
-})
 
-//BUSCA POR ID
 router.get('/:id', async(req, res) => {
     try{
         const servicos = await Servico.findById(req.params.id)
@@ -32,6 +22,17 @@ router.get('/:id', async(req, res) => {
         res.json({error:true, message:err.message})
     }
 })
+
+//LISTAR TODOS OS Servicos
+router.get('/', async(req, res) => {
+    try{
+        const servico = await Servico.find()
+        res.json({error:false, servcadastrado:servico})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
+})
+
 
 //UPDATE COM ID retornando atualizado
 router.put('/:id', async(req, res) =>{

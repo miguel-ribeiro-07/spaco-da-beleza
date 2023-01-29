@@ -7,9 +7,9 @@ const agendamento = new Schema({
         ref:'Cliente',
         require:true
     },
-    sevicoId:{
+    servicoId:{
         type:mongoose.Types.ObjectId,
-        ref:'Servico',
+        ref:'Servicos',
         require:true
     },
     dataHora:{
