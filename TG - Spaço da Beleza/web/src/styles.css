@@ -1,5 +1,18 @@
+:root{
+    --primary: #8936b3;
+    --secondary: #ff4dff;
+    --dark:#21232f;
+    --white:#FFFFFF;
+    --sucess:#06d6a0;
+
+}
+
 #root{
     height: 100%;
     width: 100%;
     position: fixed;
+}
+
+header{
+    background-color: var(--primary);
 }
