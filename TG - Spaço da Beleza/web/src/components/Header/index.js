@@ -15,6 +15,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link } from 'react-router-dom';
+import '../../styles.css'
+
 
 const Header = () =>{
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,7 +31,7 @@ const Header = () =>{
 
     return (
         <Box>
-            <AppBar style={{ "background-image": "linear-gradient(to bottom, #ff4dff, #FFA2FF)" }}>
+            <AppBar position='static' style={{ "background-image": "linear-gradient(to bottom, #ff4dff, #FFA2FF)", borderRadius:"15px" }}>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -55,13 +57,26 @@ const Header = () =>{
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>
-                            <EventAvailableIcon/><Link to="/"></Link>Agendamentos
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}><GroupIcon/>
-                            <Link to="/clientes"></Link>Clientes</MenuItem>
-                        <MenuItem onClick={handleClose}><ContentCutIcon/>Servicos</MenuItem>
-                        <MenuItem onClick={handleClose}><AccessTimeIcon/>Horarios</MenuItem>
+                        <Link to="/" style={{textDecoration:"none"}}>
+                            <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
+                                <EventAvailableIcon style={{padding:"0px 10px"}}/>Agendamentos
+                            </MenuItem>
+                        </Link>
+                        <Link to="/clientes" style={{textDecoration:"none"}}>
+                            <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
+                                <GroupIcon style={{padding:"0px 10px"}}/>Clientes
+                            </MenuItem>
+                        </Link>
+                        <Link to="/servicos"style={{textDecoration:"none"}}>
+                            <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
+                                <ContentCutIcon style={{padding:"0px 10px"}}/>Servicos
+                            </MenuItem>
+                        </Link>
+                        <Link to="/horarios" style={{textDecoration:"none"}}>
+                            <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
+                                <AccessTimeIcon style={{padding:"0px 10px"}}/>Horarios
+                            </MenuItem>
+                        </Link>
                     </Menu>
 
                     <img src={logo} width='210px' height='40px' alt='Spaco da Beleza'/>

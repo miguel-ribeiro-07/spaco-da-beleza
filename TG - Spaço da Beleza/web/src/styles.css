@@ -1,8 +1,9 @@
-:root{
+#root{
     --primary: #ff4dff;
     --secondary: #8936b3;
     --dark:#21232f;
     --white:#FFFFFF;
     --sucess:#06d6a0;
+    font-family: 'Poppins', sans-serif;
 
 }

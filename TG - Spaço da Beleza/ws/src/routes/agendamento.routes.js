@@ -17,6 +17,26 @@ router.post('/', async(req, res) => {
     }
 })
 
+router.post('/filter', async(req, res) =>{
+    try{
+        const {periodo} = req.body
+        console.log(periodo)
+
+        const agendamentos = await Agendamento.find({
+            dataHora:{
+                $gte:moment(periodo.inicio).startOf('day'),
+                $lte:moment(periodo.final).endOf('day')
+            }
+        }).populate([
+            {path:'servicoId', select:'nomeServico duracao'},
+            {path:'clienteId', select:'nome'}
+        ])
+        
+        res.json({error:false, agendamentos:agendamentos})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }})
+
 //CONSULTA DE DIAS DISPONIVEIS
 router.post('/dias-disponiveis', async(req, res) =>{
     try{
