@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
+
+const Clientes = () =>{
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'firstName', headerName: 'First name', width: 130 },
@@ -35,7 +37,7 @@ const rows = [
 ];
 
 
-const Clientes = () =>{
+
     return (
         <div style={{ height: 400, width: '100%' }}>
           <DataGrid
