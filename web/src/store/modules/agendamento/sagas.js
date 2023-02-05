@@ -16,8 +16,6 @@ export function* filterAgendamento({start, end}) {
             alert(res.message)
             return false
         }
-        console.log(res)
-
          yield put(updateAgendamento(res.agendamentos))
     }catch(err){
         alert(err.message)

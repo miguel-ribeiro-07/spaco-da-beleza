@@ -27,7 +27,7 @@ router.get('/', async(req, res) => {
     try{
         const clientes = await Cliente.find()
         console.log(clientes)
-        res.json({error:false, cativo:clientes})
+        res.json({error:false, clientes:clientes})
     }catch(err){
         res.json({error:true, message:err.message})
     }
