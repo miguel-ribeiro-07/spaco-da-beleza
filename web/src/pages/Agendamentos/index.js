@@ -47,7 +47,7 @@ const Agendamentos = () =>{
         <div className="col p-5 overflow-auto h-100">
             <div className="row">
                 <div className="col-12">
-                    <h2 className="mb-4">Agendamentos</h2>
+                    <h1 className="mb-4">Agendamentos</h1>
                     <Calendar
                     localizer={localizer}
                     onRangeChange={(periodo) =>{

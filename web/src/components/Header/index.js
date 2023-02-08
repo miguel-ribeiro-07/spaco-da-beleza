@@ -14,11 +14,12 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import GroupIcon from '@mui/icons-material/Group';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '../../styles.css'
 
-
 const Header = () =>{
+
+    const location = useLocation()
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleMenu = (event) => {
@@ -31,7 +32,9 @@ const Header = () =>{
 
     return (
         <Box>
-            <AppBar position='static' style={{ "background-image": "linear-gradient(to bottom, #ff4dff, #FFA2FF)", borderRadius:"15px" }}>
+            <AppBar sx={location.pathname === '/cadastro' || location.pathname === '/login' ? 'display:none':'display:block'}
+             position='static' 
+             style={{ "background-image": "linear-gradient(to bottom, #ff4dff, #FFA2FF)", borderRadius:"15px" }}>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -57,7 +60,7 @@ const Header = () =>{
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                        <Link to="/" style={{textDecoration:"none"}}>
+                        <Link to="/agendamentos" style={{textDecoration:"none"}}>
                             <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
                                 <EventAvailableIcon style={{padding:"0px 10px"}}/>Agendamentos
                             </MenuItem>

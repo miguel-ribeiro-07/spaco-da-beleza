@@ -7,3 +7,15 @@ export function allClientes(){
 export function updateCliente(payload){
     return {type: types.UPDATE_CLIENTE, payload}
 }
+
+export function getCliente(){
+    return{type: types.GET_CLIENTE}
+}
+
+export function addCliente(){
+    return{type: types.ADD_CLIENTE}
+}
+
+export function resetCliente(){
+    return{type: types.RESET_CLIENTE}
+}

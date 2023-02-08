@@ -2,26 +2,66 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import {useEffect} from 'react'
 import moment from 'moment'
-import { allClientes } from '../../store/modules/cliente/action';
+import { allClientes, updateCliente } from '../../store/modules/cliente/action';
 import {useDispatch, useSelector} from 'react-redux'
-import { border } from '@mui/system';
+import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {useNavigate} from 'react-router-dom'
 
 
 const Clientes = () =>{
-  const dispatch = useDispatch()
-  const {clientes} = useSelector((state) => state.clientes)
-
   
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+  const {clientes, components} = useSelector((state) => state.cliente)
+
+  const setComponent = (component, state) => {
+    dispatch(updateCliente({
+      component: {...components, [component]:state},
+    }))
+  }
+
+
   useEffect(() =>{
     dispatch(allClientes())
   }, [])
 
 const columns = [
   { field: 'nome', headerName: 'Nome', width: 130, headerClassName:'super-app-theme--header', headerAlign: 'center'},
-  { field: 'email', headerName: 'E-mail', width: 130, headerClassName:'super-app-theme--header', headerAlign: 'center'},
+  { field: 'email', headerName: 'E-mail', width: 200, headerClassName:'super-app-theme--header', headerAlign: 'center'},
   { field: 'telefone', headerName: 'Telefone', width: 130, headerClassName:'super-app-theme--header', headerAlign: 'center'},
   { field: 'sexo', headerName: 'Sexo', width: 130, headerClassName:'super-app-theme--header', headerAlign: 'center'},
   { field: 'dataCadastro', headerName: 'Data de Cadastro', width: 160, headerClassName:'super-app-theme--header', headerAlign: 'center'},
+  { 
+    field: 'editar',
+    headerName: 'Editar',
+    align: 'center',
+    headerClassName:'super-app-theme--header',
+    width: 100,
+    headerAlign: 'center', 
+    renderCell: params => (
+      <IconButton aria-label="editar"
+      onClick={() => navigate(`/editar/${params.id}`)}
+      >
+        <EditIcon />
+      </IconButton>
+    )
+  },
+  { 
+    field: 'excluir',
+    headerName: 'Exluir',
+    align: 'center',
+    headerClassName:'super-app-theme--header',
+    width: 100,
+    headerAlign: 'center', 
+    renderCell: params => (
+      <IconButton aria-label="editar">
+        <DeleteIcon/>
+      </IconButton>
+    )
+  }
 ];
 
 const rows = (clientes.map((cliente) =>({
@@ -38,7 +78,6 @@ const rows = (clientes.map((cliente) =>({
         <div style={{ height: 600, width: '100%' }}>
           <h1>Clientes</h1>
           <DataGrid
-            checkboxSelection
             rows={rows}
             columns={columns}
             pageSize={6}
@@ -48,7 +87,7 @@ const rows = (clientes.map((cliente) =>({
               border:3,
               borderColor:'#8936b3',
               '& .super-app-theme--header': {
-                backgroundColor: '#ff4dff',
+                backgroundColor: '#8936b3',
               }
             }}
           />
