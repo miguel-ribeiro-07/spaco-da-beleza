@@ -7,18 +7,23 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { MenuItem } from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux'
-import { updateCliente, getCliente } from '../../store/modules/cliente/action';
+import { updateCliente, getCliente, updateClienteDB } from '../../store/modules/cliente/actions';
 import { useParams } from 'react-router';
 import { useEffect } from 'react';
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
+import {useNavigate} from 'react-router-dom'
 
 
 
-const Editar = () => {
 
+const EditarCliente = () => {
+
+  const navigate = useNavigate()
   const cltId = useParams()
   const dispatch = useDispatch()
 
-  const {cliente, clientebanco} = useSelector((state) => state.cliente)
+  const {cliente, clientebanco, components} = useSelector((state) => state.cliente)
 
   const setCliente = (key, value) =>{
     dispatch(updateCliente({
@@ -26,11 +31,24 @@ const Editar = () => {
     }))
   }
 
+  const setComponent = (component, state) =>{
+    dispatch(
+      updateCliente({
+        components: {... components, [component]:state},
+      })
+    )
+  }
+  
   useEffect(() =>{
+    dispatch(updateCliente({
+      id:cltId.id
+    }))
     dispatch(getCliente())
   }, [])
 
-  console.log(clientebanco)
+  const update = () =>{
+    dispatch(updateClienteDB())
+  }
 
   return (
       <Container component="main" maxWidth="xs">
@@ -41,6 +59,7 @@ const Editar = () => {
 
         }}
         >
+          <Typography variant='h4' marginBottom={1}>Dados cadastrais</Typography>
           <Typography variant='h5' marginBottom={1}>Nome: {clientebanco.nome}</Typography>
           <Typography variant='h5' marginBottom={1}>Email: {clientebanco.email}</Typography>
           <Typography variant='h5' marginBottom={1}>Telefone: {clientebanco.telefone}</Typography>
@@ -64,20 +83,22 @@ const Editar = () => {
                 <TextField
                   autoComplete="nome"
                   name="nome"
-                  required
                   fullWidth
+                  disabled={components.disabled}
                   id="nome"
                   label="Nome"
                   autoFocus
                   value={cliente.nome}
                   onChange={(e) => setCliente('nome', e.target.value)}
                 />
+                
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextField                  
                   required
                   fullWidth
                   id="email"
+                  disabled={components.disabled}
                   label="Email"
                   name="email"
                   autoComplete="email"
@@ -89,6 +110,7 @@ const Editar = () => {
                 <TextField
                   required
                   fullWidth
+                  disabled={components.disabled}
                   id="telefone"
                   label="Telefone"
                   name="telefone"
@@ -101,6 +123,7 @@ const Editar = () => {
                 <TextField
                   required
                   fullWidth
+                  disabled={components.disabled}
                   select
                   typeof='number'
                   name="sexo"
@@ -117,17 +140,36 @@ const Editar = () => {
               </Grid>
             </Grid>
             <Button
-              type="submit"
               fullWidth
+              disabled={components.disabled}
               variant="contained"
+              onClick={() => update()}
               sx={{ mt: 3, mb: 2 }}
             >
-              Atualizar
+              Atualizar Cliente
             </Button>
+            <Collapse in={components.sucessEdit}>
+              <Alert
+                variant="filled"
+                severity="success"
+                action={
+                  <Button 
+                  color="inherit" 
+                  size="small" 
+                  onClick={() => {setComponent('sucessEdit', false)
+                  navigate('/clientes')
+                  }
+                  }>
+                    Voltar para clientes!
+                  </Button>
+                }>
+                Cliente atualizado com sucesso
+              </Alert>
+            </Collapse>  
           </Box>
         </Box>
       </Container>
   );
 }
 
-export default Editar
+export default EditarCliente

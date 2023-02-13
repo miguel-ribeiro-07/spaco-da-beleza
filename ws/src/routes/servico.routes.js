@@ -15,9 +15,7 @@ router.post('/', async(req, res) => {
 router.get('/:id', async(req, res) => {
     try{
         const servicos = await Servico.findById(req.params.id)
-        res.json({
-            serv: [servicos].map((s) =>({label: s.nomeServico, value: s._id}))
-        })
+        res.json({servicos:servicos})
     }catch(err){
         res.json({error:true, message:err.message})
     }

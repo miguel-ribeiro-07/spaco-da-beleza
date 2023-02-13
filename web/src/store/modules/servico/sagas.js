@@ -1,24 +1,24 @@
 import {takeLatest, all, call, put, select} from 'redux-saga/effects'
-import { updateCliente, allClientes as allClientesAction, resetCliente } from './actions'
+import { updateServico, allServicos as allServicosAction, resetServico } from './actions'
 import types from './types'
 import api from '../../../services/api'
 
-export function* allClientes(){
+export function* allServicos(){
     try{
-        const {data: res} = yield call(api.get, '/cliente/')
+        const {data: res} = yield call(api.get, '/servico/')
 
         if(res.error){
             alert(res.message)
             return false
         }
 
-        yield put(updateCliente({clientes:res.clientes}))
+        yield put(updateServico({servicos:res.servcadastrado}))
     }catch(err){
         alert(err.message)
     }
 }
 
-export function* getCliente(){
+export function* getServico(){
     const {id} = yield select((state) => state.cliente)
 
     try{
@@ -29,20 +29,19 @@ export function* getCliente(){
             return false
         }
 
-        yield put(updateCliente({clientebanco:res.clientes}))
+        yield put(updateServico({clientebanco:res.clientes}))
     }catch(err){
         alert(err.message)
     }
 }
 
-export function* addCliente(){
+export function* addServico(){
     const {clientecadastro, components} = yield select((state) => state.cliente)
 
     try{
         const {data: res} = yield call(api.post, '/cliente', {...clientecadastro})
-        console.log(res)
 
-        yield put(updateCliente({components:{...components, sucessSignUp:true}}))
+        yield put(updateServico({components:{...components, sucessSignUp:true}}))
 
         if(res.error){
             alert(res.message)
@@ -53,7 +52,7 @@ export function* addCliente(){
     }
 }
 
-export function* deleteCliente(){
+export function* deleteServico(){
     const {id, components} = yield select((state) => state.cliente)
 
     try{
@@ -64,15 +63,15 @@ export function* deleteCliente(){
             return false
         }
         
-        yield put(allClientesAction())
-        yield put(updateCliente({components: {...components, confirmDelete:false}}))
+        yield put(allServicosAction())
+        yield put(updateServico({components: {...components, confirmDelete:false}}))
 
     }catch(err){
         alert(err.message)
     }
 }
 
-export function* updateClienteDB(){
+export function* updateServicoDB(){
     const {id, components, cliente, clientebanco} = yield select((state) => state.cliente)
 
     try{
@@ -89,8 +88,8 @@ export function* updateClienteDB(){
             return false
         }
 
-        yield put(updateCliente({components: {...components, sucessEdit:true, disabled:true}}))
-        yield put(resetCliente())
+        yield put(updateServico({components: {...components, sucessEdit:true, disabled:true}}))
+        yield put(resetServico())
 
     }catch(err){
         alert(err.message)
@@ -98,9 +97,9 @@ export function* updateClienteDB(){
 }
 
 export default all([
-    takeLatest(types.ALL_CLIENTES, allClientes),
-    takeLatest(types.GET_CLIENTE, getCliente),
-    takeLatest(types.ADD_CLIENTE, addCliente),
-    takeLatest(types.DELETE_CLIENTE, deleteCliente),
-    takeLatest(types.UPDATE_CLIENTEDB, updateClienteDB)
+    takeLatest(types.ALL_SERVICOS, allServicos),
+    takeLatest(types.GET_SERVICO, getServico),
+    takeLatest(types.ADD_SERVICO, addServico),
+    takeLatest(types.DELETE_SERVICO, deleteServico),
+    takeLatest(types.UPDATE_SERVICODB, updateServicoDB)
 ])

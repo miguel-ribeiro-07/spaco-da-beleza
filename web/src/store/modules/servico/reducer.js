@@ -1,5 +1,6 @@
 import produce from 'immer'
 import types from './types'
+import moment from 'moment'
 
 const INITIAL_STATE = {
     components:{
@@ -8,39 +9,33 @@ const INITIAL_STATE = {
         sucessEdit:false,
         disabled:false
     },
-    clientes:[],
-    cliente:{
-        email:'',
-        nome:'',
-        telefone:'',
-        sexo:'',
+    servicos:[],
+    servico:{
+        nomeServico:'',
+        descricao:'',
+        duracao:'',
+        preco:'',
+        status:'A'
     },
-    clientecadastro:{
-        email:'',
-        nome:'',
-        telefone:'',
-        sexo:'',
-        senha:''
-    },
-    clientebanco:{
-        email:'',
-        nome:'',
-        telefone:'',
-        sexo:'',
-    },
-    id:[]
+    servicobanco:{
+        nomeServico:'',
+        descricao:'',
+        duracao:moment('00:30', 'HH:mm'). format(),
+        preco:'',
+        status:''
+    }
 }
 
-function cliente(state = INITIAL_STATE, action){
+function servico(state = INITIAL_STATE, action){
     switch(action.type){
-        case types.UPDATE_CLIENTE: {
+        case types.UPDATE_SERVICO: {
             return produce (state, (draft) =>{
                 draft = {...draft, ...action.payload}
                 return draft
             })
-        } case types.RESET_CLIENTE: {
+        } case types.RESET_SERVICO: {
             return produce (state, (draft) =>{
-                draft.cliente = INITIAL_STATE.cliente
+                draft.servico = INITIAL_STATE.servico
                 return draft
             })
         }  
@@ -49,4 +44,4 @@ function cliente(state = INITIAL_STATE, action){
     }
 }
 
-export default cliente
+export default servico

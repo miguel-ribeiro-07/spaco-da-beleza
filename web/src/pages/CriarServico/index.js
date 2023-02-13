@@ -1,35 +1,31 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-import { MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import logo from '../../assets/logotipo.png'
-import { updateCliente, addCliente } from '../../store/modules/cliente/actions';
 import Container from '@mui/material/Container';
-import { useDispatch, useSelector } from 'react-redux';
+import { MenuItem } from '@mui/material';
+import {useDispatch, useSelector} from 'react-redux'
+import { updateCliente, getCliente, updateClienteDB } from '../../store/modules/cliente/actions';
+import { useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import {useNavigate} from 'react-router-dom'
 
 
-const Cadastro = () => {
 
 
-  const dispatch = useDispatch()
+const CriarServico = () => {
+
   const navigate = useNavigate()
-  const {clientecadastro, components} = useSelector((state) => state.cliente)
+  const dispatch = useDispatch()
 
-  const save = () => {
-    dispatch(addCliente())
-  }
+  const {cliente, clientebanco, components} = useSelector((state) => state.cliente)
 
   const setCliente = (key, value) =>{
     dispatch(updateCliente({
-      clientecadastro: {...clientecadastro, [key]:value},
+      cliente: {...cliente, [key]:value},
     }))
   }
 
@@ -40,86 +36,84 @@ const Cadastro = () => {
       })
     )
   }
+  
+  useEffect(() =>{
+  }, [])
+
+  const update = () =>{
+    dispatch(updateClienteDB())
+  }
+
   return (
-    <Box width={'100%'} height={'100%'} style={{ "background-image": "linear-gradient(to bottom, #ff4dff, #FFA2FF)"}}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems:'center',
           }}
         >
-          <img src={logo}  alt='Spaco da Beleza'/>
           <Typography component="h1" variant="h5">
-            Cadastre-se
+           Adicionar novo serviço
           </Typography>
-          <Box noValidate sx={{ mt: 3 }}>
+          <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="nome"
                   name="nome"
-                  required
                   fullWidth
+                  disabled={components.disabled}
                   id="nome"
-                  label="Nome"
+                  label="Nome do serviço"
+                  placeholder='Ex: Depilação, escova, maquiagem, mão e pé...'
                   autoFocus
-                  value={clientecadastro.nome}
+                  value={cliente.nome}
                   onChange={(e) => setCliente('nome', e.target.value)}
                 />
+                
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextField                  
                   required
                   fullWidth
                   id="email"
-                  label="Email"
+                  disabled={components.disabled}
+                  label="Descrição do serviço"
+                  placeholder='Ex: Depilação com cera, coloração completa...'
                   name="email"
                   autoComplete="email"
-                  value={clientecadastro.email}
+                  value={cliente.email}
                   onChange={(e) => setCliente('email', e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
+                  disabled={components.disabled}
                   id="telefone"
-                  label="Telefone"
+                  label="Preço"
                   name="telefone"
                   autoComplete="telefone"
-                  value={clientecadastro.telefone}
+                  value={cliente.telefone}
                   onChange={(e) => setCliente('telefone', e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
-                  name="senha"
-                  label="Senha"
-                  type="password"
-                  id="senha"
-                  autoComplete="new-password"
-                  value={clientecadastro.senha}
-                  onChange={(e) => setCliente('senha', e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+                  disabled={components.disabled}
                   select
                   typeof='number'
                   name="sexo"
-                  label="Sexo"
+                  label="Duração"
                   type="sexo"
                   id="sexo"
                   autoComplete="sexo"
-                  value={clientecadastro.sexo}
+                  value={cliente.sexo}
                   onChange={(e) => setCliente('sexo', e.target.value)}
                 >
                 <MenuItem key={'F'} value={'Feminino'}>Feminino</MenuItem>
@@ -129,13 +123,14 @@ const Cadastro = () => {
             </Grid>
             <Button
               fullWidth
+              disabled={components.disabled}
               variant="contained"
+              onClick={() => update()}
               sx={{ mt: 3, mb: 2 }}
-              onClick={() => save()}
             >
-              Cadastrar
+              Cadastrar serviço
             </Button>
-            <Collapse in={components.sucessSignUp}>
+            <Collapse in={components.sucessEdit}>
               <Alert
                 variant="filled"
                 severity="success"
@@ -143,28 +138,20 @@ const Cadastro = () => {
                   <Button 
                   color="inherit" 
                   size="small" 
-                  onClick={() => {setComponent('sucessSignUp', false)
-                  navigate('/login')
+                  onClick={() => {setComponent('sucessEdit', false)
+                  navigate('/clientes')
                   }
                   }>
-                    Faça o login!
+                    Voltar para clientes!
                   </Button>
                 }>
-                Cadastro realizado com sucesso
+                Cliente atualizado com sucesso
               </Alert>
             </Collapse>  
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login">
-                  Já possui uma conta? Faça o login
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
-    </Box>
   );
 }
 
-export default Cadastro
+export default CriarServico

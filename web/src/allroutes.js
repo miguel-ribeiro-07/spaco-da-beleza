@@ -7,7 +7,8 @@ import {
 import Header from "./components/Header";
 import Agendamento from "./pages/Agendamentos"
 import Clientes from "./pages/Clientes"
-import Editar from "./pages/Editar/"
+import EditarCliente from "./pages/EditarCliente/"
+import CriarServico from "./pages/CriarServico";
 import Cadastro from "./pages/Cadastro"
 import Servicos from "./pages/Servicos";
 import Box from '@mui/material/Box';
@@ -21,8 +22,9 @@ import Box from '@mui/material/Box';
                   <Routes>
                   <Route path="/agendamentos" element={<Agendamento />} />
                   <Route path="/clientes" element={<Clientes />} />
-                  <Route path="/editar/:id" element={<Editar />} />
+                  <Route path="/editar-cliente/:id" element={<EditarCliente />} />
                   <Route path="/servicos" element={<Servicos />}/>
+                  <Route path="/criar-servico" element={<CriarServico />}/>
                   <Route path="/cadastro" element={<Cadastro/>} />
                   </Routes>
               </Router>

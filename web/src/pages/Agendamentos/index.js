@@ -14,6 +14,7 @@ const Agendamentos = () =>{
     const dispatch = useDispatch()
     const {agendamentos} = useSelector((state) => state.agendamento)
 
+
     const formatEventos = agendamentos.map((agendamento) => ({
         title:`${agendamento.servicoId.nomeServico} - ${agendamento.clienteId.nome}`,
         start:moment(agendamento.dataHora).toDate(),

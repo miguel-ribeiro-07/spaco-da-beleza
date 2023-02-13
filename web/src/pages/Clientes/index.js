@@ -2,12 +2,19 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import {useEffect} from 'react'
 import moment from 'moment'
-import { allClientes, updateCliente } from '../../store/modules/cliente/action';
+import { allClientes, updateCliente, deleteCliente, getCliente } from '../../store/modules/cliente/actions';
 import {useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useNavigate} from 'react-router-dom'
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 const Clientes = () =>{
@@ -15,14 +22,20 @@ const Clientes = () =>{
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
-  const {clientes, components} = useSelector((state) => state.cliente)
+  const {clientes, components, clientebanco} = useSelector((state) => state.cliente)
 
-  const setComponent = (component, state) => {
-    dispatch(updateCliente({
-      component: {...components, [component]:state},
-    }))
+
+  const setComponent = (component, state) =>{
+    dispatch(
+      updateCliente({
+        components: {... components, [component]:state},
+      })
+    )
   }
 
+  const remove = () => {
+    dispatch(deleteCliente())
+  }
 
   useEffect(() =>{
     dispatch(allClientes())
@@ -43,7 +56,9 @@ const columns = [
     headerAlign: 'center', 
     renderCell: params => (
       <IconButton aria-label="editar"
-      onClick={() => navigate(`/editar/${params.id}`)}
+      onClick={() => {
+        setComponent('disabled', false)
+        navigate(`/editar-cliente/${params.id}`)}}
       >
         <EditIcon />
       </IconButton>
@@ -57,7 +72,14 @@ const columns = [
     width: 100,
     headerAlign: 'center', 
     renderCell: params => (
-      <IconButton aria-label="editar">
+      <IconButton aria-label="delete"
+      onClick={() => {
+        dispatch(updateCliente({
+          id:params.id
+        }))
+        dispatch(getCliente())
+        setComponent('confirmDelete', true)}}
+      >
         <DeleteIcon/>
       </IconButton>
     )
@@ -91,6 +113,30 @@ const rows = (clientes.map((cliente) =>({
               }
             }}
           />
+          <Dialog
+          open={components.confirmDelete}
+          onClose={() => setComponent('confirmDelete', false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Exclusão de cliente"}
+            </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Realmente gostaria de realizar a exclusão do cliente?
+                </DialogContentText>
+                <DialogContentText >
+                  Nome do cliente: {clientebanco.nome}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => remove()}>Deletar</Button>
+                <Button onClick={() => setComponent('confirmDelete', false)} autoFocus>
+                  Não deletar
+                </Button>
+              </DialogActions>
+          </Dialog>
         </div>
       );
     

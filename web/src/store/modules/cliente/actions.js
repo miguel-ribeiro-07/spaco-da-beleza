@@ -16,6 +16,14 @@ export function addCliente(){
     return{type: types.ADD_CLIENTE}
 }
 
+export function deleteCliente(){
+    return{type: types.DELETE_CLIENTE}
+}
+
+export function updateClienteDB(){
+    return{type: types.UPDATE_CLIENTEDB}
+}
+
 export function resetCliente(){
     return{type: types.RESET_CLIENTE}
 }

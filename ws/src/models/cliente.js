@@ -21,12 +21,6 @@ const cliente = new Schema({
         enum:['Feminino', 'Masculino'],
         require: [true, 'O sexo é obrigatório']
     },
-    status:{
-        type:String,
-        enum:['A', 'I'],
-        require:true,
-        default: 'A'
-    },
     dataCadastro:{
         type:Date,
         default: Date.now
