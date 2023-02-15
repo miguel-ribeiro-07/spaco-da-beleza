@@ -89,8 +89,8 @@ export function* updateClienteDB(){
             return false
         }
 
-        yield put(updateCliente({components: {...components, sucessEdit:true, disabled:true}}))
         yield put(resetCliente())
+        yield put(updateCliente({components: {...components, sucessEdit:true, disabled:true}}))
 
     }catch(err){
         alert(err.message)

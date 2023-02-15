@@ -4,8 +4,8 @@ import moment from 'moment'
 
 const INITIAL_STATE = {
     components:{
-        sucessSignUp: false,
         confirmDelete: false,
+        sucessAdd: false,
         sucessEdit:false,
         disabled:false
     },
@@ -13,14 +13,14 @@ const INITIAL_STATE = {
     servico:{
         nomeServico:'',
         descricao:'',
-        duracao:'',
+        duracao:moment('00:30', 'HH:mm'). format(),
         preco:'',
         status:'A'
     },
     servicobanco:{
         nomeServico:'',
         descricao:'',
-        duracao:moment('00:30', 'HH:mm'). format(),
+        duracao:'',
         preco:'',
         status:''
     }

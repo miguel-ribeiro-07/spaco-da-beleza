@@ -125,7 +125,6 @@ const EditarCliente = () => {
                   fullWidth
                   disabled={components.disabled}
                   select
-                  typeof='number'
                   name="sexo"
                   label="Sexo"
                   type="sexo"

@@ -5,24 +5,26 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { MenuItem } from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux'
-import { updateServico, addServico, resetServico} from '../../store/modules/servico/actions';
+import { updateServico, getServico, updateServicoDB } from '../../store/modules/servico/actions';
+import { useParams } from 'react-router';
 import { useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import {useNavigate} from 'react-router-dom'
-import { MenuItem } from '@mui/material';
 import moment from 'moment'
 
 
 
 
-const CriarServico = () => {
+const EditarServico = () => {
 
   const navigate = useNavigate()
+  const servicoId = useParams()
   const dispatch = useDispatch()
 
-  const {servico, components} = useSelector((state) => state.servico)
+  const {servico, servicobanco, components} = useSelector((state) => state.servico)
 
   const setServico = (key, value) =>{
     dispatch(updateServico({
@@ -38,19 +40,35 @@ const CriarServico = () => {
     )
   }
 
-  useEffect(() =>{
-    resetServico()
-  }, [])
   
-  console.log(servico)
+  useEffect(() =>{
+    dispatch(updateServico({
+      id:servicoId.id
+    }))
+    dispatch(getServico())
+  }, [])
 
-
-  const save = () => {
-    dispatch(addServico())
+  const update = () =>{
+    dispatch(updateServicoDB())
   }
 
   return (
       <Container component="main" maxWidth="xs">
+        <Box
+        sx={{
+          marginTop:8,
+          display:'block'
+
+        }}
+        >
+          <Typography variant='h4' marginBottom={1}>Dados do serviço</Typography>
+          <Typography variant='h5' marginBottom={1}>Nome do serviço: {servicobanco.nomeServico}</Typography>
+          <Typography variant='h5' marginBottom={1}>Descrição: {servicobanco.descricao}</Typography>
+          <Typography variant='h5' marginBottom={1}>Duração: {moment(servicobanco.duracao).format('HH:mm')}</Typography>
+          <Typography variant='h5' marginBottom={1}>Preço: {`R$${servicobanco.preco}`}</Typography>
+          <Typography variant='h5' marginBottom={1}>Status: {servicobanco.status === 'A' ? 'Ativo': 'Inativo'}</Typography>
+        </Box>
+
         <Box
           sx={{
             marginTop: 8,
@@ -60,7 +78,7 @@ const CriarServico = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-           Adicionar novo serviço
+           Editar servico
           </Typography>
           <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={3}>
@@ -71,8 +89,7 @@ const CriarServico = () => {
                   fullWidth
                   disabled={components.disabled}
                   id="nomeServico"
-                  label="Nome do serviço"
-                  placeholder='Ex: Depilação, escova, maquiagem, mão e pé...'
+                  label="Nome Servico"
                   autoFocus
                   value={servico.nomeServico}
                   onChange={(e) => setServico('nomeServico', e.target.value)}
@@ -95,7 +112,7 @@ const CriarServico = () => {
                   onChange={(e) => setServico('descricao', e.target.value)}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <TextField
                   required
                   fullWidth
@@ -109,7 +126,25 @@ const CriarServico = () => {
                   onChange={(e) => setServico('preco', e.target.value.replace(",", "."))}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
+                <TextField
+                  required
+                  fullWidth
+                  disabled={components.disabled}
+                  select
+                  name="status"
+                  label="Status"
+                  type="status"
+                  id="status"
+                  autoComplete="status"
+                  value={servico.status}
+                  onChange={(e) => setServico('status', e.target.value)}
+                >
+                <MenuItem key={'A'} value={'A'}>Ativo</MenuItem>
+                <MenuItem key={'I'} value={'I'}>Inativo</MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={4}>
                 <TextField
                     required
                     fullWidth
@@ -142,12 +177,12 @@ const CriarServico = () => {
               fullWidth
               disabled={components.disabled}
               variant="contained"
-              onClick={() => save()}
+              onClick={() => update()}
               sx={{ mt: 3, mb: 2 }}
             >
-              Cadastrar serviço
+              Atualizar Serviço
             </Button>
-            <Collapse in={components.sucessAdd}>
+            <Collapse in={components.sucessEdit}>
               <Alert
                 variant="filled"
                 severity="success"
@@ -155,15 +190,14 @@ const CriarServico = () => {
                   <Button 
                   color="inherit" 
                   size="small" 
-                  onClick={() => {setComponent('sucessAdd', false)
-                  dispatch(resetServico())
+                  onClick={() => {setComponent('sucessEdit', false)
                   navigate('/servicos')
                   }
                   }>
-                    Voltar para Serviços!
+                    Voltar para servicos!
                   </Button>
                 }>
-                Serviço cadastrado com sucesso
+                Serviço atualizado com sucesso
               </Alert>
             </Collapse>  
           </Box>
@@ -172,4 +206,4 @@ const CriarServico = () => {
   );
 }
 
-export default CriarServico
+export default EditarServico

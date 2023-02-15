@@ -15,7 +15,7 @@ router.post('/', async(req, res) => {
 router.get('/:id', async(req, res) => {
     try{
         const servicos = await Servico.findById(req.params.id)
-        res.json({servicos:servicos})
+        res.json({servico:servicos})
     }catch(err){
         res.json({error:true, message:err.message})
     }
@@ -46,7 +46,7 @@ router.put('/:id', async(req, res) =>{
 //DELETAR POR ID
 router.delete('/:id', async(req, res) =>{
     try{
-        await Servico.findByIdAndUpdate(req.params.id, {status: 'E'})
+        await Servico.findByIdAndDelete(req.params.id)
         const servico = await Servico.findById(req.params.id)
         res.json({error:false, upd:servico})
     }catch(err){

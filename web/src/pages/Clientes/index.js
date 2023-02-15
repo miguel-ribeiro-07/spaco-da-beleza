@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import {useEffect} from 'react'
 import moment from 'moment'
-import { allClientes, updateCliente, deleteCliente, getCliente } from '../../store/modules/cliente/actions';
+import { allClientes, updateCliente, deleteCliente, getCliente, resetCliente } from '../../store/modules/cliente/actions';
 import {useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -58,6 +58,7 @@ const columns = [
       <IconButton aria-label="editar"
       onClick={() => {
         setComponent('disabled', false)
+        dispatch(resetCliente())
         navigate(`/editar-cliente/${params.id}`)}}
       >
         <EditIcon />

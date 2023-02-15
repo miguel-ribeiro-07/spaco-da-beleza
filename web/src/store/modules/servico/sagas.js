@@ -19,29 +19,29 @@ export function* allServicos(){
 }
 
 export function* getServico(){
-    const {id} = yield select((state) => state.cliente)
+    const {id} = yield select((state) => state.servico)
 
     try{
-        const {data: res} = yield call(api.get, `/cliente/${id}`)
+        const {data: res} = yield call(api.get, `/servico/${id}`)
 
         if(res.error){
             alert(res.message)
             return false
         }
 
-        yield put(updateServico({clientebanco:res.clientes}))
+        yield put(updateServico({servicobanco:res.servico}))
     }catch(err){
         alert(err.message)
     }
 }
 
 export function* addServico(){
-    const {clientecadastro, components} = yield select((state) => state.cliente)
+    const {servico, components} = yield select((state) => state.servico)
 
     try{
-        const {data: res} = yield call(api.post, '/cliente', {...clientecadastro})
+        const {data: res} = yield call(api.post, '/servico', {...servico})
 
-        yield put(updateServico({components:{...components, sucessSignUp:true}}))
+        yield put(updateServico({components:{...components, sucessAdd:true, disabled:true}}))
 
         if(res.error){
             alert(res.message)
@@ -53,10 +53,10 @@ export function* addServico(){
 }
 
 export function* deleteServico(){
-    const {id, components} = yield select((state) => state.cliente)
+    const {id, components} = yield select((state) => state.servico)
 
     try{
-        const {data: res} = yield call(api.delete, `/cliente/${id}`)
+        const {data: res} = yield call(api.delete, `/servico/${id}`)
 
         if(res.error){
             alert(res.message)
@@ -72,15 +72,16 @@ export function* deleteServico(){
 }
 
 export function* updateServicoDB(){
-    const {id, components, cliente, clientebanco} = yield select((state) => state.cliente)
+    const {id, components, servico, servicobanco} = yield select((state) => state.servico)
 
     try{
-        const {data: res} = yield call(api.put, `/cliente/${id}`, 
+        const {data: res} = yield call(api.put, `/servico/${id}`, 
         {
-            email: cliente.email === '' ? clientebanco.email : cliente.email,
-            nome: cliente.nome === '' ? clientebanco.nome : cliente.nome,
-            telefone: cliente.telefone === '' ? clientebanco.telefone : cliente.telefone,
-            sexo: cliente.sexo === '' ? clientebanco.sexo : cliente.sexo
+            nomeServico: servico.nomeServico === '' ? servicobanco.nomeServico : servico.nomeServico,
+            descricao: servico.descricao === '' ? servicobanco.descricao : servico.descricao,
+            duracao: servico.duracao === '' ? servicobanco.duracao : servico.duracao,
+            preco: servico.preco === '' ? servicobanco.preco : servico.preco,
+            status: servico.status === '' ? servicobanco.status : servico.status,
         })
 
         if(res.error){
@@ -89,7 +90,6 @@ export function* updateServicoDB(){
         }
 
         yield put(updateServico({components: {...components, sucessEdit:true, disabled:true}}))
-        yield put(resetServico())
 
     }catch(err){
         alert(err.message)

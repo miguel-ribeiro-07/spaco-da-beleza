@@ -9,6 +9,7 @@ import Agendamento from "./pages/Agendamentos"
 import Clientes from "./pages/Clientes"
 import EditarCliente from "./pages/EditarCliente/"
 import CriarServico from "./pages/CriarServico";
+import EditarServico from "./pages/EditarServico"
 import Cadastro from "./pages/Cadastro"
 import Servicos from "./pages/Servicos";
 import Box from '@mui/material/Box';
@@ -25,6 +26,7 @@ import Box from '@mui/material/Box';
                   <Route path="/editar-cliente/:id" element={<EditarCliente />} />
                   <Route path="/servicos" element={<Servicos />}/>
                   <Route path="/criar-servico" element={<CriarServico />}/>
+                  <Route path="/editar-servico/:id" element={<EditarServico />}/>
                   <Route path="/cadastro" element={<Cadastro/>} />
                   </Routes>
               </Router>

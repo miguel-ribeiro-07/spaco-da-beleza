@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import {useEffect} from 'react'
 import moment from 'moment'
-import { allServicos, updateServico, deleteServico, getServico } from '../../store/modules/servico/actions';
+import { allServicos, updateServico, deleteServico, getServico, resetServico} from '../../store/modules/servico/actions';
 import {useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -14,7 +14,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Grid from '@mui/material/Grid';
 
 
 
@@ -44,17 +43,17 @@ const Servicos = () =>{
 
 const columns = [
   { field: 'nomeServico', headerName: 'Nome do Serviço', width: 150, headerClassName:'super-app-theme--header', headerAlign: 'center'},
-  { field: 'descricao', headerName: 'Descrição do Serviço', width: 250, headerClassName:'super-app-theme--header', headerAlign: 'center'},
-  { field: 'duracao', headerName: 'Duração', width: 130, headerClassName:'super-app-theme--header', headerAlign: 'center'},
-  { field: 'preco', headerName: 'Preço', width: 130, headerClassName:'super-app-theme--header', headerAlign: 'center'},
-  { field: 'status', headerName: 'Status', width: 160, headerClassName:'super-app-theme--header', headerAlign: 'center'},
-  { field: 'dataCadastro', headerName: 'Data de Cadastro', width: 160, headerClassName:'super-app-theme--header', headerAlign: 'center'},
+  { field: 'descricao', headerName: 'Descrição do Serviço', width: 300, headerClassName:'super-app-theme--header', headerAlign: 'center'},
+  { field: 'duracao', headerName: 'Duração', width: 70, headerClassName:'super-app-theme--header', headerAlign: 'center'},
+  { field: 'preco', headerName: 'Preço', width: 90, headerClassName:'super-app-theme--header', headerAlign: 'center'},
+  { field: 'status', headerName: 'Status', width: 70, headerClassName:'super-app-theme--header', headerAlign: 'center'},
+  { field: 'dataCadastro', headerName: 'Data de Cadastro', width: 130, headerClassName:'super-app-theme--header', headerAlign: 'center'},
   { 
     field: 'editar',
     headerName: 'Editar',
     align: 'center',
     headerClassName:'super-app-theme--header',
-    width: 100,
+    width: 65,
     headerAlign: 'center', 
     renderCell: params => (
       <IconButton aria-label="editar"
@@ -71,7 +70,7 @@ const columns = [
     headerName: 'Exluir',
     align: 'center',
     headerClassName:'super-app-theme--header',
-    width: 100,
+    width: 80,
     headerAlign: 'center', 
     renderCell: params => (
       <IconButton aria-label="delete"
@@ -94,7 +93,7 @@ const rows = (servicos.map((servico) =>({
     descricao:servico.descricao,
     duracao:moment(servico.duracao).format('HH:mm'),
     preco:`R$${servico.preco.toFixed(2)}`,
-    status:servico.status,
+    status:servico.status === 'A' ? 'Ativo' : 'Inativo',
     dataCadastro:moment(servico.dataCadastro).format('DD/MM/YYYY')
 })))
 
@@ -102,12 +101,15 @@ const rows = (servicos.map((servico) =>({
     return (
         <div style={{ height: 600, width: '100%' }}>
           <h1>Servicos</h1>
-          <Button style={{marginBottom:15, marginLeft:0}} variant='contained' onClick={() => navigate('/criar-servico')}>ADICIONAR NOVO SERVIÇO</Button>
+          <Button style={{marginBottom:15, marginLeft:0}} variant='contained' onClick={() => {
+            setComponent('disabled', false)
+            dispatch(resetServico())
+            navigate('/criar-servico')}}>ADICIONAR NOVO SERVIÇO</Button>
           <DataGrid
             rows={rows}
             columns={columns}
-            pageSize={6}
-            rowsPerPageOptions={[6]}
+            pageSize={9}
+            rowsPerPageOptions={[9]}
             sx={{
               boxShadow:2,
               border:3,
