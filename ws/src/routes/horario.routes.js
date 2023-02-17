@@ -26,8 +26,7 @@ router.get('/:id', async(req, res) => {
 router.get('/', async(req, res) => {
     try{
         const horarios = await Horario.find()
-        console.log(horarios)
-        res.json({error:false, disphora:horarios})
+        res.json({error:false, horarios:horarios})
     }catch(err){
         res.json({error:true, message:err.message})
     }
