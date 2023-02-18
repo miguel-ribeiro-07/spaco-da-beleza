@@ -13,6 +13,8 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import 'moment/locale/pt-br'
+import Autocomplete from '@mui/material/Autocomplete';
+
 
 moment.locale('pt-br')
 const localizer = momentLocalizer(moment)
@@ -26,10 +28,7 @@ const style = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems:'center'
+  p: 6,
 };
 
 const Horarios = () =>{
@@ -44,6 +43,16 @@ const Horarios = () =>{
     new Date(2023, 2, 18, 0, 0, 0, 0),
   ]
 
+  const diasSemana = [
+    { dia: 'Segunda', valor: 1 },
+    { dia: 'Terça', valor: 2 },
+    { dia: 'Quarta', valor: 3 },
+    { dia: 'Quinta', valor: 4 },
+    { dia: 'Sexta', valor: 5 },
+    { dia: 'Sábado', valor: 6 },
+    { dia: 'Domingo', valor: 0 }
+  ];
+
   const dispatch = useDispatch()
   const {horarios, horario, servicos, components} = useSelector((state) => state.horario)
 
@@ -56,7 +65,11 @@ const Horarios = () =>{
     )
   }
 
-  const setHorario = ''
+  const setHorario = (key, value) =>{
+    dispatch(updateHorario({
+      horario: {...horario, [key]:value},
+    }))
+  }
 
   useEffect(() =>{
     dispatch(allHorarios())
@@ -83,7 +96,7 @@ const Horarios = () =>{
 
   }))).flat()
 
-  console.log(horario, components.modal)
+  console.log(horario)
 
     return (
         <div style={{ height: 600, width: '100%' }}>
@@ -116,91 +129,60 @@ const Horarios = () =>{
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                  <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography id="modal-modal-title" variant="h4" component="h2" marginBottom={5}>
                     Atualizar horário
                   </Typography>
-                  <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="nomeServico"
-                  name="nomeServico"
-                  fullWidth
-                  disabled={components.disabled}
-                  id="nomeServico"
-                  label="Nome Servico"
-                  autoFocus
-                  value={''}
-                  onChange={(e) => setHorario('nomeServico', e.target.value)}
-                />
-                
-              </Grid>
-              <Grid item xs={12}>
-                <TextField                  
-                  required
-                  fullWidth
-                  id="descricao"
-                  maxRows={3}
-                  multiline
-                  disabled={components.disabled}
-                  label="Descrição do serviço"
-                  placeholder='Ex: Depilação com cera, coloração completa...'
-                  name="descricao"
-                  autoComplete="descricao"
-                  value={''}
-                  onChange={(e) => setHorario('descricao', e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  required
-                  fullWidth
-                  disabled={components.disabled}
-                  id="preco"
-                  label="Preço"
-                  name="preco"
-                  type="number"
-                  autoComplete="preco"
-                  value={''}
-                  onChange={(e) => setHorario('preco', e.target.value.replace(",", "."))}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  required
-                  fullWidth
-                  disabled={components.disabled}
-                  select
-                  name="status"
-                  label="Status"
-                  type="status"
-                  id="status"
-                  autoComplete="status"
-                  value={''}
-                  onChange={(e) => setHorario('status', e.target.value)}
-                >
-                <MenuItem key={'A'} value={'A'}>Ativo</MenuItem>
-                <MenuItem key={'I'} value={'I'}>Inativo</MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                    required
-                    fullWidth
-                    disabled={components.disabled}
-                    select
-                    name="duracao"
-                    label="Duração"
-                    type="duracao"
-                    id="duracao"
-                    autoComplete="duracao"
-                    value={''}
-                    onChange={(e) => setHorario('duracao', e.target.value)}
-                  >
-                  </TextField>
-              </Grid>
-              <Grid item xs={3}><Button variant='outlined'>Atualizar</Button></Grid>
-            </Grid>
-                </Box>
+                <Grid container spacing={3} item>
+                  <Grid item xs={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      disabled={components.disabled}
+                      name="horaInicio"
+                      label="Horário de início"
+                      type="horaInicio"
+                      id="horaInicio"
+                      autoComplete="horaInicio"
+                      value={horario.horaInicio}
+                      onChange={(e) => setHorario('horaInicio', e.target.value)}
+                    >
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      disabled={components.disabled}
+                      name="horaFim"
+                      label="Horário de término"
+                      type="horaFim"
+                      id="horaFim"
+                      autoComplete="horaFim"
+                      value={horario.diaSemana}
+                      onChange={(e) => setHorario('diaSemana', e.target.value)}
+                    >
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={12}>
+                  <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={diasSemana}
+                      getOptionLabel={(option) => option.dia}
+                      filterSelectedOptions
+                      onChange={(event, value) => console.log(value.map((e) => e.valor))}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Dias de atendimento"
+                          placeholder="Dia da semana"
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12}><Button variant='outlined'>Atualizar</Button></Grid>
+                </Grid>
+              </Box>
             </Modal>
         </div>
       );

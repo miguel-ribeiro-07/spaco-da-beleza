@@ -8,12 +8,19 @@ const INITIAL_STATE = {
         sucessEdit:false,
         modal:false,
         view: 'week',
-        disabled:false
+        disabled:false,
+        segunda:'',
+        terca:'',
+        quarta:'',
+        quinta:'',
+        sexta:'',
+        sabado:'',
+        domingo:''
     },
     servicos:[],
     horarios:[],
     horario:{
-        dias:[],
+        diaSemana:[],
         horaInicio:'',
         horaFim:'',
         servicosId:[]
