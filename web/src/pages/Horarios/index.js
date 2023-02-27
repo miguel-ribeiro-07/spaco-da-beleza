@@ -169,8 +169,9 @@ const Horarios = () =>{
                       id="tags-outlined"
                       options={diasSemana}
                       getOptionLabel={(option) => option.dia}
-                      filterSelectedOptions
-                      onChange={(event, value) => console.log(value.map((e) => e.valor))}
+                      filterSelectedOptions                    
+                      onChange={(event, value) => setHorario('diaSemana' ,value.map((e) => e.valor))}
+                      isOptionEqualToValue={(option, value) => option.valor === value.valor}
                       renderInput={(params) => (
                         <TextField
                           {...params}
