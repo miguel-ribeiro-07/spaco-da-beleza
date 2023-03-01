@@ -7,7 +7,8 @@ import { allHorarios, allServicos, updateHorario, removeHorario, resetHorario } 
 import {useDispatch, useSelector} from 'react-redux'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { MenuItem } from '@mui/material';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
@@ -43,14 +44,14 @@ const Horarios = () =>{
     new Date(2023, 2, 18, 0, 0, 0, 0),
   ]
 
-  const diasSemana = [
+  const opcoesDias = [
+    { dia: 'Domingo', valor: 0 },
     { dia: 'Segunda', valor: 1 },
     { dia: 'Terça', valor: 2 },
     { dia: 'Quarta', valor: 3 },
     { dia: 'Quinta', valor: 4 },
     { dia: 'Sexta', valor: 5 },
-    { dia: 'Sábado', valor: 6 },
-    { dia: 'Domingo', valor: 0 }
+    { dia: 'Sábado', valor: 6 }
   ];
 
   const dispatch = useDispatch()
@@ -96,8 +97,6 @@ const Horarios = () =>{
 
   }))).flat()
 
-  console.log(horario)
-
     return (
         <div style={{ height: 600, width: '100%' }}>
           <h1>Horarios</h1>
@@ -132,6 +131,7 @@ const Horarios = () =>{
                 <Typography id="modal-modal-title" variant="h4" component="h2" marginBottom={5}>
                     Atualizar horário
                   </Typography>
+
                 <Grid container spacing={3} item>
                   <Grid item xs={6}>
                     <TextField
@@ -158,8 +158,8 @@ const Horarios = () =>{
                       type="horaFim"
                       id="horaFim"
                       autoComplete="horaFim"
-                      value={horario.diaSemana}
-                      onChange={(e) => setHorario('diaSemana', e.target.value)}
+                      value={moment(horario.horaFim).format('HH:mm')}
+                      onChange={(e) => setHorario('horaFim', e.target.value)}
                     >
                     </TextField>
                   </Grid>
@@ -167,7 +167,12 @@ const Horarios = () =>{
                   <Autocomplete
                       multiple
                       id="tags-outlined"
-                      options={diasSemana}
+                      value={opcoesDias.filter((e) => {
+                        for (let dianum of horario.diaSemana){
+                          if (dianum === e.valor) return true
+                        }
+                      })}
+                      options={opcoesDias}
                       getOptionLabel={(option) => option.dia}
                       filterSelectedOptions                    
                       onChange={(event, value) => setHorario('diaSemana' ,value.map((e) => e.valor))}
@@ -181,7 +186,8 @@ const Horarios = () =>{
                       )}
                     />
                   </Grid>
-                  <Grid item xs={12}><Button variant='outlined'>Atualizar</Button></Grid>
+                  <Grid item xs={8}><Button variant='contained'>Atualizar</Button></Grid>
+                  <Grid item xs={1}><Button variant='contained'>Deletar</Button></Grid>
                 </Grid>
               </Box>
             </Modal>

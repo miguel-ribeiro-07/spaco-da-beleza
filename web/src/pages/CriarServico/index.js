@@ -41,8 +41,6 @@ const CriarServico = () => {
   useEffect(() =>{
     resetServico()
   }, [])
-  
-  console.log(servico)
 
 
   const save = () => {
