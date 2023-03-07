@@ -54,6 +54,7 @@ const Horarios = () =>{
     { dia: 'Sábado', valor: 6 }
   ];
 
+
   const dispatch = useDispatch()
   const {horarios, horario, servicos, components} = useSelector((state) => state.horario)
 
@@ -77,6 +78,7 @@ const Horarios = () =>{
     dispatch(allServicos())
   }, [])
 
+
   
   const formatEvents = horarios.map((horario) => 
   horario.diaSemana.map((dia) => ({
@@ -96,6 +98,8 @@ const Horarios = () =>{
     )
 
   }))).flat()
+
+  console.log(horario, servicos)
 
     return (
         <div style={{ height: 600, width: '100%' }}>
@@ -132,6 +136,13 @@ const Horarios = () =>{
                     Atualizar horário
                   </Typography>
 
+                  <Typography id="modal-modal-title" variant="h6"  marginBottom={0}>
+                    Inicio do horário de atendimento: {moment(horario.horaInicio).format('HH:mm')}
+                  </Typography>
+                  <Typography id="modal-modal-title" variant="h6"  marginBottom={2}>
+                    Fim do horário de atendimento: {moment(horario.horaFim).format('HH:mm')}
+                  </Typography>
+
                 <Grid container spacing={3} item>
                   <Grid item xs={6}>
                     <TextField
@@ -143,8 +154,7 @@ const Horarios = () =>{
                       type="horaInicio"
                       id="horaInicio"
                       autoComplete="horaInicio"
-                      value={horario.horaInicio}
-                      onChange={(e) => setHorario('horaInicio', e.target.value)}
+                      onChange={(e) => setHorario('horaInicio', moment(e.target.value, 'HH:mm'). format())}
                     >
                     </TextField>
                   </Grid>
@@ -158,8 +168,7 @@ const Horarios = () =>{
                       type="horaFim"
                       id="horaFim"
                       autoComplete="horaFim"
-                      value={moment(horario.horaFim).format('HH:mm')}
-                      onChange={(e) => setHorario('horaFim', e.target.value)}
+                      onChange={(e) => setHorario('horaFim', moment(e.target.value, 'HH:mm'). format())}
                     >
                     </TextField>
                   </Grid>
@@ -185,6 +194,26 @@ const Horarios = () =>{
                         />
                       )}
                     />
+                    
+                  </Grid>
+                  <Grid item xs={12}>
+                  <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={servicos}
+                      getOptionLabel={(option) => option.nomeServico}
+                      filterSelectedOptions                    
+                      onChange={(event, value) => setHorario('servicoId' , value.map((e) => e._id))}
+                      isOptionEqualToValue={(option, value) => option._id === value._id}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Servicos"
+                          placeholder="Servicos do dia"
+                        />
+                      )}
+                    />
+                    
                   </Grid>
                   <Grid item xs={8}><Button variant='contained'>Atualizar</Button></Grid>
                   <Grid item xs={1}><Button variant='contained'>Deletar</Button></Grid>
