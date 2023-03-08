@@ -35,13 +35,13 @@ export function* allServicos(){
 
 
 export function* addHorario(){
-    const {clientecadastro, components} = yield select((state) => state.cliente)
+    const {horario, components} = yield select((state) => state.horario)
 
     try{
-        const {data: res} = yield call(api.post, '/cliente', {...clientecadastro})
+        const {data: res} = yield call(api.post, '/horario', {...horario})
         console.log(res)
 
-        yield put(updateHorario({components:{...components, sucessSignUp:true}}))
+        yield put(updateHorario({components:{...components, disabled:true}}))
 
         if(res.error){
             alert(res.message)

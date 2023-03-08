@@ -73,6 +73,8 @@ const Horarios = () =>{
     }))
   }
 
+
+
   useEffect(() =>{
     dispatch(allHorarios())
     dispatch(allServicos())
@@ -137,10 +139,10 @@ const Horarios = () =>{
                   </Typography>
 
                   <Typography id="modal-modal-title" variant="h6"  marginBottom={0}>
-                    Inicio do horário de atendimento: {moment(horario.horaInicio).format('HH:mm')}
+                    Inicio do horário de atendimento: {moment(horario.horaInicio).format('HH:mm')} hrs
                   </Typography>
                   <Typography id="modal-modal-title" variant="h6"  marginBottom={2}>
-                    Fim do horário de atendimento: {moment(horario.horaFim).format('HH:mm')}
+                    Fim do horário de atendimento: {moment(horario.horaFim).format('HH:mm')} hrs
                   </Typography>
 
                 <Grid container spacing={3} item>
@@ -200,6 +202,15 @@ const Horarios = () =>{
                   <Autocomplete
                       multiple
                       id="tags-outlined"
+                      value={ horario.servicoId >= 1 ?
+                        servicos.filter((e) => {
+                        for (let servico of horario.servicoId){
+                          if (servico === e._id) return true
+                        }
+                      })
+                      :
+                      ""
+                    }
                       options={servicos}
                       getOptionLabel={(option) => option.nomeServico}
                       filterSelectedOptions                    
