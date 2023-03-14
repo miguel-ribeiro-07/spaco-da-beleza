@@ -2,6 +2,7 @@ import produce from 'immer'
 import types from './types'
 
 const INITIAL_STATE = {
+    behavior:'',
     components:{
         confirmDelete: false,
         sucessAdd: false,

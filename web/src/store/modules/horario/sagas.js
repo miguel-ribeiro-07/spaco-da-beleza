@@ -71,8 +71,36 @@ export function* removeHorario(){
     }
 }
 
+export function* updateHorarioDB(){
+    const {components, horario} = yield select((state) => state.horario)
+
+    try{
+        const {data: res} = yield call(api.put, `/horario/${horario._id}`, 
+        {
+            diaSemana: horario.diaSemana,
+            horaInicio: horario.horaInicio,
+            horaFim: horario.horaFim,
+            servicosId: horario.servicosId
+        })
+
+
+        if(res.error){
+            alert(res.message)
+            return false
+        }
+
+        yield put(updateHorario({components: {...components, sucessEdit:true, disabled:true}}))
+
+    }catch(err){
+        alert(err.message)
+    }
+}
+
 
 export default all([
     takeLatest(types.ALL_HORARIOS, allHorarios),
-    takeLatest(types.ALL_SERVICOS, allServicos)
+    takeLatest(types.ALL_SERVICOS, allServicos),
+    takeLatest(types.ALL_SERVICOS, allServicos),
+    takeLatest(types.ALL_SERVICOS, allServicos),
+    takeLatest(types.UPDATE_HORARIODB, updateHorarioDB)
 ])

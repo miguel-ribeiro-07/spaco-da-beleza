@@ -37,7 +37,7 @@ router.put('/:id', async(req, res) =>{
     try{
         await Horario.findByIdAndUpdate(req.params.id, req.body)
         let uphorarios = await Horario.findById(req.params.id)
-        res.json({error:false, upd:uphorarios})
+        res.json({error:false, horario:uphorarios})
     }catch(err){
         res.json({error:true, message:err.message})
     }

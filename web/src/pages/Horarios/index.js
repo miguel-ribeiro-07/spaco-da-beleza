@@ -3,18 +3,20 @@ import {useEffect} from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { allHorarios, allServicos, updateHorario, removeHorario, resetHorario } from '../../store/modules/horario/actions';
+import { allHorarios, allServicos, updateHorario, updateHorarioDB, removeHorario, resetHorario, addHorario } from '../../store/modules/horario/actions';
 import {useDispatch, useSelector} from 'react-redux'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import 'moment/locale/pt-br'
 import Autocomplete from '@mui/material/Autocomplete';
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 
 moment.locale('pt-br')
@@ -25,7 +27,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 375,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -56,7 +58,7 @@ const Horarios = () =>{
 
 
   const dispatch = useDispatch()
-  const {horarios, horario, servicos, components} = useSelector((state) => state.horario)
+  const {horarios, horario, servicos, components, behavior} = useSelector((state) => state.horario)
 
 
   const setComponent = (component, state) =>{
@@ -73,7 +75,9 @@ const Horarios = () =>{
     }))
   }
 
-
+  const update = () =>{
+    dispatch(updateHorarioDB())
+  }
 
   useEffect(() =>{
     dispatch(allHorarios())
@@ -81,11 +85,16 @@ const Horarios = () =>{
   }, [])
 
 
+  useEffect(() =>{
+    setComponent('disabled', false)
+  }, [components.modal])
+
+
   
   const formatEvents = horarios.map((horario) => 
   horario.diaSemana.map((dia) => ({
     resource: horario,
-    title:`Qtd de Serviços ${horario.servicoId.length}`,
+    title:`Qtd de Serviços ${horario.servicosId.length}`,
     start: new Date(
       diasSemanaData[dia].setHours(
         parseInt(moment(horario.horaInicio).format('HH')),
@@ -101,17 +110,23 @@ const Horarios = () =>{
 
   }))).flat()
 
-  console.log(horario, servicos)
+  console.log(horario, behavior)
 
     return (
         <div style={{ height: 600, width: '100%' }}>
           <h1>Horarios</h1>
+          <Grid marginBottom={3}>
+          <Button variant='contained' onClick={() => {
+            setComponent('modal', true)
+            dispatch(resetHorario())
+          }}>Criar novo horário</Button>
+          </Grid>
           <Calendar
             onSelectEvent={(e) => {
               dispatch(updateHorario({
                 horario: e.resource
               }))
-              setComponent('modal', true)
+              setComponent('modal', true);
             }}
             localizer={localizer}
             events={formatEvents}
@@ -134,18 +149,29 @@ const Horarios = () =>{
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h4" component="h2" marginBottom={5}>
+                <Grid container spacing={1} item>
+                  <Grid item xs={11}>
+                  <Typography id="modal-modal-title" variant="h4" component="h2" marginBottom={5}>
                     Atualizar horário
                   </Typography>
-
+                  </Grid>
+                  <Grid item xs={1}>
+                  <IconButton size="large" onClick={() =>{setComponent('modal', false)}}>
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                  </Grid>
+                  <Grid item xs={12}>
                   <Typography id="modal-modal-title" variant="h6"  marginBottom={0}>
                     Inicio do horário de atendimento: {moment(horario.horaInicio).format('HH:mm')} hrs
                   </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
                   <Typography id="modal-modal-title" variant="h6"  marginBottom={2}>
                     Fim do horário de atendimento: {moment(horario.horaFim).format('HH:mm')} hrs
                   </Typography>
-
-                <Grid container spacing={3} item>
+                  </Grid>
+                  </Grid>
+                  <Grid container spacing={3} item>
                   <Grid item xs={6}>
                     <TextField
                       required
@@ -176,6 +202,7 @@ const Horarios = () =>{
                   </Grid>
                   <Grid item xs={12}>
                   <Autocomplete
+                      disabled={components.disabled}
                       multiple
                       id="tags-outlined"
                       value={opcoesDias.filter((e) => {
@@ -200,21 +227,18 @@ const Horarios = () =>{
                   </Grid>
                   <Grid item xs={12}>
                   <Autocomplete
+                      disabled={components.disabled}
                       multiple
                       id="tags-outlined"
-                      value={ horario.servicoId >= 1 ?
-                        servicos.filter((e) => {
-                        for (let servico of horario.servicoId){
-                          if (servico === e._id) return true
+                      value={servicos.filter((e) => {
+                        for (let servID of horario.servicosId){
+                          if (servID === e._id) return true
                         }
-                      })
-                      :
-                      ""
-                    }
+                      })}
                       options={servicos}
                       getOptionLabel={(option) => option.nomeServico}
                       filterSelectedOptions                    
-                      onChange={(event, value) => setHorario('servicoId' , value.map((e) => e._id))}
+                      onChange={(event, value) => setHorario('servicosId' , value.map((e) => e._id))}
                       isOptionEqualToValue={(option, value) => option._id === value._id}
                       renderInput={(params) => (
                         <TextField
@@ -226,8 +250,28 @@ const Horarios = () =>{
                     />
                     
                   </Grid>
-                  <Grid item xs={8}><Button variant='contained'>Atualizar</Button></Grid>
+                  <Grid item xs={8}><Button variant='contained' onClick={() => update()}>Atualizar</Button></Grid>
                   <Grid item xs={1}><Button variant='contained'>Deletar</Button></Grid>
+                  <Grid item xs={12}>
+                  <Collapse in={components.sucessEdit}>
+                    <Alert
+                      variant="filled"
+                      severity="success"
+                      action={
+                        <Button 
+                        color="inherit" 
+                        size="small" 
+                        onClick={() => {
+                        setComponent('sucessEdit', false)
+                        dispatch(allHorarios())
+                        }}>
+                          OK!
+                        </Button>
+                      }>
+                      Horário atualizado com sucesso
+                    </Alert>
+                  </Collapse>
+                  </Grid>
                 </Grid>
               </Box>
             </Modal>

@@ -27,3 +27,7 @@ export function removeHorario(){
 export function allServicos(){
     return{type: types.ALL_SERVICOS}
 }
+
+export function updateHorarioDB(){
+    return{type: types.UPDATE_HORARIODB}
+}

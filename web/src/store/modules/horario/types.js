@@ -5,7 +5,8 @@ const types = {
     DELETE_HORARIO:'@horario/DELETE',
     RESET_HORARIO:'@horario/RESET',
     REMOVE_HORARIO:'@horario/REMOVE',
-    ALL_SERVICOS:'@horario/ALL_SERVICOS'
+    ALL_SERVICOS:'@horario/ALL_SERVICOS',
+    UPDATE_HORARIODB:'@horario/UPDATEDB',
 }
 
 export default types
