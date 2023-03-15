@@ -39,9 +39,8 @@ export function* addHorario(){
 
     try{
         const {data: res} = yield call(api.post, '/horario', {...horario})
-        console.log(res)
 
-        yield put(updateHorario({components:{...components, disabled:true}}))
+        yield put(updateHorario({components:{...components, disabled:true, successMessage:true}}))
 
         if(res.error){
             alert(res.message)
@@ -53,10 +52,10 @@ export function* addHorario(){
 }
 
 export function* removeHorario(){
-    const {id, components} = yield select((state) => state.cliente)
+    const {horario, components} = yield select((state) => state.horario)
 
     try{
-        const {data: res} = yield call(api.delete, `/cliente/${id}`)
+        const {data: res} = yield call(api.delete, `/horario/${horario._id}`)
 
         if(res.error){
             alert(res.message)
@@ -64,7 +63,7 @@ export function* removeHorario(){
         }
         
         yield put(allHorariosAction())
-        yield put(updateHorario({components: {...components, confirmDelete:false}}))
+        yield put(updateHorario({components: {...components, confirmDelete:false, modal:false}}))
 
     }catch(err){
         alert(err.message)
@@ -89,7 +88,7 @@ export function* updateHorarioDB(){
             return false
         }
 
-        yield put(updateHorario({components: {...components, sucessEdit:true, disabled:true}}))
+        yield put(updateHorario({components: {...components, successMessage:true, disabled:true}}))
 
     }catch(err){
         alert(err.message)
@@ -100,7 +99,7 @@ export function* updateHorarioDB(){
 export default all([
     takeLatest(types.ALL_HORARIOS, allHorarios),
     takeLatest(types.ALL_SERVICOS, allServicos),
-    takeLatest(types.ALL_SERVICOS, allServicos),
-    takeLatest(types.ALL_SERVICOS, allServicos),
+    takeLatest(types.ADD_HORARIO, addHorario),
+    takeLatest(types.REMOVE_HORARIO, removeHorario),
     takeLatest(types.UPDATE_HORARIODB, updateHorarioDB)
 ])

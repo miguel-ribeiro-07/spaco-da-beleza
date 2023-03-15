@@ -17,6 +17,11 @@ import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 moment.locale('pt-br')
@@ -75,8 +80,16 @@ const Horarios = () =>{
     }))
   }
 
-  const update = () =>{
+  const update = () => {
     dispatch(updateHorarioDB())
+  }
+
+  const save = () => {
+    dispatch(addHorario())
+  }
+
+  const remove = () => {
+    dispatch(removeHorario())
   }
 
   useEffect(() =>{
@@ -87,8 +100,8 @@ const Horarios = () =>{
 
   useEffect(() =>{
     setComponent('disabled', false)
+    dispatch(allHorarios())
   }, [components.modal])
-
 
   
   const formatEvents = horarios.map((horario) => 
@@ -110,8 +123,6 @@ const Horarios = () =>{
 
   }))).flat()
 
-  console.log(horario, behavior)
-
     return (
         <div style={{ height: 600, width: '100%' }}>
           <h1>Horarios</h1>
@@ -119,6 +130,7 @@ const Horarios = () =>{
           <Button variant='contained' onClick={() => {
             setComponent('modal', true)
             dispatch(resetHorario())
+            dispatch(updateHorario({behavior:'create'}))
           }}>Criar novo horário</Button>
           </Grid>
           <Calendar
@@ -127,6 +139,7 @@ const Horarios = () =>{
                 horario: e.resource
               }))
               setComponent('modal', true);
+              dispatch(updateHorario({behavior:'update'}))
             }}
             localizer={localizer}
             events={formatEvents}
@@ -162,12 +175,12 @@ const Horarios = () =>{
                   </Grid>
                   <Grid item xs={12}>
                   <Typography id="modal-modal-title" variant="h6"  marginBottom={0}>
-                    Inicio do horário de atendimento: {moment(horario.horaInicio).format('HH:mm')} hrs
+                    Horário de início de atendimento: {horario.horaInicio === '' ? '' : moment(horario.horaInicio).format('HH:mm')}
                   </Typography>
                   </Grid>
                   <Grid item xs={12}>
                   <Typography id="modal-modal-title" variant="h6"  marginBottom={2}>
-                    Fim do horário de atendimento: {moment(horario.horaFim).format('HH:mm')} hrs
+                    Horário de fim de atendimento: {horario.horaFim === '' ? '' : moment(horario.horaFim).format('HH:mm')}
                   </Typography>
                   </Grid>
                   </Grid>
@@ -250,10 +263,10 @@ const Horarios = () =>{
                     />
                     
                   </Grid>
-                  <Grid item xs={8}><Button variant='contained' onClick={() => update()}>Atualizar</Button></Grid>
-                  <Grid item xs={1}><Button variant='contained'>Deletar</Button></Grid>
+                  <Grid item xs={8}><Button variant='contained' disabled={components.disabled} onClick={() => behavior === 'create' ? save() : update()}>{behavior === 'create' ? 'Cadastrar' : 'Atualizar'}</Button></Grid>
+                  <Grid item xs={1}>{behavior === 'update' && <Button disabled={components.disabled} variant='contained' onClick={() => setComponent('confirmDelete', true)}>Deletar</Button>}</Grid>
                   <Grid item xs={12}>
-                  <Collapse in={components.sucessEdit}>
+                  <Collapse in={components.successMessage}>
                     <Alert
                       variant="filled"
                       severity="success"
@@ -262,15 +275,35 @@ const Horarios = () =>{
                         color="inherit" 
                         size="small" 
                         onClick={() => {
-                        setComponent('sucessEdit', false)
-                        dispatch(allHorarios())
+                        setComponent('successMessage', false)
                         }}>
                           OK!
                         </Button>
                       }>
-                      Horário atualizado com sucesso
+                      Horário {behavior === 'create' ? 'cadastrado' : 'atualizado'} com sucesso!
                     </Alert>
                   </Collapse>
+                  <Dialog
+                    open={components.confirmDelete}
+                    onClose={() => setComponent('confirmDelete', false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    >
+                      <DialogTitle id="alert-dialog-title">
+                        {"Exclusão de horário"}
+                      </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Realmente gostaria de realizar a exclusão deste horário?
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={() => remove()}>Deletar</Button>
+                          <Button onClick={() => setComponent('confirmDelete', false)} autoFocus>
+                            Não deletar
+                          </Button>
+                        </DialogActions>
+                  </Dialog>
                   </Grid>
                 </Grid>
               </Box>

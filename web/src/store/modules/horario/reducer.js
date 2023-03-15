@@ -5,8 +5,7 @@ const INITIAL_STATE = {
     behavior:'',
     components:{
         confirmDelete: false,
-        sucessAdd: false,
-        sucessEdit:false,
+        successMessage:false,
         modal:false,
         view: 'week',
         disabled:false
