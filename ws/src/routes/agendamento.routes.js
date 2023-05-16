@@ -20,7 +20,6 @@ router.post('/', async(req, res) => {
 router.post('/filter', async(req, res) =>{
     try{
         const {periodo} = req.body
-        console.log(periodo)
 
         const agendamentos = await Agendamento.find({
             dataHora:{

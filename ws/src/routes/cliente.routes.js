@@ -26,7 +26,6 @@ router.get('/:id', async(req, res) => {
 router.get('/', async(req, res) => {
     try{
         const clientes = await Cliente.find()
-        console.log(clientes)
         res.json({error:false, clientes:clientes})
     }catch(err){
         res.json({error:true, message:err.message})
@@ -58,7 +57,7 @@ router.delete('/:id', async(req, res) =>{
 //RECEBE OS FILTROS DE DADOS POR FILTERS
 router.post('/filter', async(req, res) =>{
     try{
-        const filtCliente = await Cliente.find(req.body.filters)
+        const filtCliente = await Cliente.find(req.body)
         res.json({error:false, filtCliente})
     }catch(err){
         res.json({error:true, message:err.message})
