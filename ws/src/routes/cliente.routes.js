@@ -41,7 +41,6 @@ router.put('/:id', async(req, res) =>{
     }catch(err){
         res.json({error:true, message:err.message})
     }
-
 })
 
 //DELETAR POR ID
