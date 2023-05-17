@@ -40,7 +40,6 @@ export function* addCliente(){
 
     try{
         const {data: res} = yield call(api.post, '/cliente', {...clientecadastro})
-        console.log(res)
 
         yield put(updateCliente({components:{...components, sucessSignUp:true}}))
 
