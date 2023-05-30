@@ -41,7 +41,7 @@ const Cadastro = () => {
     )
   }
   return (
-    <Box width={'100%'} height={'100%'} style={{ "background-image": "linear-gradient(to bottom, #ff4dff, #FFA2FF)"}}>
+    <div style={{ background: 'linear-gradient(to bottom, #ff4dff, #FFA2FF)', margin: '0px', height: '100vh', overflow:'hidden'}}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -128,6 +128,7 @@ const Cadastro = () => {
               </Grid>
             </Grid>
             <Button
+              style={{backgroundColor: '#8936b3'}}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
@@ -163,7 +164,7 @@ const Cadastro = () => {
           </Box>
         </Box>
       </Container>
-    </Box>
+    </div>
   );
 }
 
