@@ -106,12 +106,16 @@ const rows = (clientes.map((cliente) =>({
             pageSize={6}
             rowsPerPageOptions={[6]}
             sx={{
-              boxShadow:2,
-              border:3,
-              borderColor:'#8936b3',
+              boxShadow: 2,
+              border: 3,
+              borderColor: '#8936b3',
               '& .super-app-theme--header': {
                 backgroundColor: '#8936b3',
-              }
+                color: 'white',
+              },
+              '& .MuiDataGrid-cell': {
+                color: 'black',
+              },
             }}
           />
           <Dialog

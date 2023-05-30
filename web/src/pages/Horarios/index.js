@@ -127,7 +127,7 @@ const Horarios = () =>{
         <div style={{ height: 600, width: '100%' }}>
           <h1>Horarios</h1>
           <Grid marginBottom={3}>
-          <Button variant='contained' onClick={() => {
+          <Button style={{marginBottom:15, marginLeft:0, backgroundColor: '#8936b3'}} variant='contained' onClick={() => {
             setComponent('modal', true)
             dispatch(resetHorario())
             dispatch(updateHorario({behavior:'create'}))

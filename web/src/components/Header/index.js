@@ -61,22 +61,22 @@ const Header = () =>{
                       onClose={handleClose}
                     >
                         <Link to="/agendamentos" style={{textDecoration:"none"}}>
-                            <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
+                            <MenuItem onClick={handleClose} style={{"color":"#8936b3", padding:"15px 15px"}}>
                                 <EventAvailableIcon style={{padding:"0px 10px"}}/>Agendamentos
                             </MenuItem>
                         </Link>
                         <Link to="/clientes" style={{textDecoration:"none"}}>
-                            <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
+                            <MenuItem onClick={handleClose} style={{"color":"#8936b3", padding:"15px 15px"}}>
                                 <GroupIcon style={{padding:"0px 10px"}}/>Clientes
                             </MenuItem>
                         </Link>
                         <Link to="/servicos"style={{textDecoration:"none"}}>
-                            <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
+                            <MenuItem onClick={handleClose} style={{"color":"#8936b3", padding:"15px 15px"}}>
                                 <ContentCutIcon style={{padding:"0px 10px"}}/>Servicos
                             </MenuItem>
                         </Link>
                         <Link to="/horarios" style={{textDecoration:"none"}}>
-                            <MenuItem onClick={handleClose} style={{"color":"#ff4dff", padding:"15px 15px"}}>
+                            <MenuItem onClick={handleClose} style={{"color":"#8936b3", padding:"15px 15px"}}>
                                 <AccessTimeIcon style={{padding:"0px 10px"}}/>Horarios
                             </MenuItem>
                         </Link>

@@ -38,7 +38,7 @@ const EditarCliente = () => {
       })
     )
   }
-  
+
   useEffect(() =>{
     dispatch(updateCliente({
       id:cltId.id

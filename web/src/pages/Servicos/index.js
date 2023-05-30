@@ -101,7 +101,7 @@ const rows = (servicos.map((servico) =>({
     return (
         <div style={{ height: 600, width: '100%' }}>
           <h1>Servicos</h1>
-          <Button style={{marginBottom:15, marginLeft:0}} variant='contained' onClick={() => {
+          <Button style={{marginBottom:15, marginLeft:0, backgroundColor: '#8936b3'}} variant='contained' onClick={() => {
             setComponent('disabled', false)
             dispatch(resetServico())
             navigate('/criar-servico')}}>ADICIONAR NOVO SERVIÇO</Button>
@@ -116,6 +116,7 @@ const rows = (servicos.map((servico) =>({
               borderColor:'#8936b3',
               '& .super-app-theme--header': {
                 backgroundColor: '#ff4dff',
+                color: 'white',
               }
             }}
           />
