@@ -5,6 +5,7 @@ import {
   } from "react-router-dom";
 
 import Header from "./components/Header";
+import Login from "./pages/Login";
 import Agendamento from "./pages/Agendamentos"
 import Clientes from "./pages/Clientes"
 import Servicos from "./pages/Servicos";
@@ -22,6 +23,7 @@ import Box from '@mui/material/Box';
               <Router>
               <Header/>
                   <Routes>
+                  <Route path="/" element={<Login/>}></Route>
                   <Route path="/cadastro" element={<Cadastro/>} />
                   <Route path="/agendamentos" element={<Agendamento />} />
                   <Route path="/clientes" element={<Clientes />} />

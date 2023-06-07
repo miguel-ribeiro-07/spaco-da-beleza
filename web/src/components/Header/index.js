@@ -32,7 +32,7 @@ const Header = () =>{
 
     return (
         <Box>
-            <AppBar sx={location.pathname === '/cadastro' || location.pathname === '/login' ? 'display:none':'display:block'}
+            <AppBar sx={location.pathname === '/cadastro' || location.pathname === '/' ? 'display:none':'display:block'}
              position='static' 
              style={{ "background-image": "linear-gradient(to bottom, #ff4dff, #FFA2FF)", borderRadius:"15px" }}>
                 <Toolbar>

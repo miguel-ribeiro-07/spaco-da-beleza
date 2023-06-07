@@ -16,7 +16,7 @@ import Collapse from '@mui/material/Collapse';
 import {useNavigate} from 'react-router-dom'
 
 
-const Cadastro = () => {
+const Login = () => {
 
 
   const dispatch = useDispatch()
@@ -46,31 +46,18 @@ const Cadastro = () => {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 30,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
           <img src={logo}  alt='Spaco da Beleza'/>
-          <Typography component="h1" variant="h5">
-            Cadastre-se
+          <Typography component="h1" variant="h4">
+            Login
           </Typography>
           <Box noValidate sx={{ mt: 3 }}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="nome"
-                  name="nome"
-                  required
-                  fullWidth
-                  id="nome"
-                  label="Nome"
-                  autoFocus
-                  value={clientecadastro.nome}
-                  onChange={(e) => setCliente('nome', e.target.value)}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -85,46 +72,17 @@ const Cadastro = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
-                  fullWidth
-                  id="telefone"
-                  label="Telefone"
-                  name="telefone"
-                  autoComplete="telefone"
-                  value={clientecadastro.telefone}
-                  onChange={(e) => setCliente('telefone', e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+                  autoComplete="senha"
                   name="senha"
-                  label="Senha"
-                  type="password"
-                  id="senha"
-                  autoComplete="new-password"
-                  value={clientecadastro.senha}
-                  onChange={(e) => setCliente('senha', e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
                   required
+                  type='password'
                   fullWidth
-                  select
-                  typeof='number'
-                  name="sexo"
-                  label="Sexo"
-                  type="sexo"
-                  id="sexo"
-                  autoComplete="sexo"
-                  value={clientecadastro.sexo}
-                  onChange={(e) => setCliente('sexo', e.target.value)}
-                >
-                <MenuItem key={'F'} value={'Feminino'}>Feminino</MenuItem>
-                <MenuItem key={'M'} value={'Masculino'}>Masculino</MenuItem>
-                </TextField>
+                  id="senha"
+                  label="Senha"
+                  autoFocus
+                  value={clientecadastro.nome}
+                  onChange={(e) => setCliente('nome', e.target.value)}
+                />
               </Grid>
             </Grid>
             <Button
@@ -134,31 +92,13 @@ const Cadastro = () => {
               sx={{ mt: 3, mb: 2 }}
               onClick={() => save()}
             >
-              Cadastrar
+              Entrar
             </Button>
-            <Collapse in={components.sucessSignUp}>
-              <Alert
-                variant="filled"
-                severity="success"
-                action={
-                  <Button 
-                  color="inherit" 
-                  size="small" 
-                  onClick={() => {setComponent('sucessSignUp', false)
-                  navigate('/login')
-                  }
-                  }>
-                    Faça o login!
-                  </Button>
-                }>
-                Cadastro realizado com sucesso
-              </Alert>
-            </Collapse>  
             <Grid container justifyContent="flex-end">
               <Grid item>
-                Já possui uma conta? 
-                <Link href="/">
-                   Faça o login
+                Não possui cadastro? 
+                <Link href="/cadastro" style={{textDecoration:"none"}} sx={{color:'white'}}>
+                Cadastre-se
                 </Link>
               </Grid>
             </Grid>
@@ -169,4 +109,4 @@ const Cadastro = () => {
   );
 }
 
-export default Cadastro
+export default Login
