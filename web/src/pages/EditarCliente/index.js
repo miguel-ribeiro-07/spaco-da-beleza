@@ -13,8 +13,15 @@ import { useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import {useNavigate} from 'react-router-dom'
-
-
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
+import WcIcon from '@mui/icons-material/Wc';
+import Divider from '@mui/material/Divider';
 
 
 const EditarCliente = () => {
@@ -53,20 +60,6 @@ const EditarCliente = () => {
   return (
       <Container component="main" maxWidth="xs">
         <Box
-        sx={{
-          marginTop:8,
-          display:'block'
-
-        }}
-        >
-          <Typography variant='h4' marginBottom={1}>Dados cadastrais</Typography>
-          <Typography variant='h5' marginBottom={1}>Nome: {clientebanco.nome}</Typography>
-          <Typography variant='h5' marginBottom={1}>Email: {clientebanco.email}</Typography>
-          <Typography variant='h5' marginBottom={1}>Telefone: {clientebanco.telefone}</Typography>
-          <Typography variant='h5' marginBottom={1}>Sexo: {clientebanco.sexo}</Typography>
-        </Box>
-
-        <Box
           sx={{
             marginTop: 8,
             display: 'flex',
@@ -74,6 +67,46 @@ const EditarCliente = () => {
             alignItems:'center',
           }}
         >
+          <Typography component="h1" variant="h5">
+           Dados do cliente
+          </Typography>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Nome" secondary={clientebanco.nome} />
+            </ListItem>
+            <Divider/>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <EmailIcon/>
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="E-mail" secondary={clientebanco.email} />
+            </ListItem>
+            <Divider/>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                <PhoneIcon/>
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Telefone" secondary={clientebanco.telefone} />
+            </ListItem>
+            <Divider/>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <WcIcon/>
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Sexo" secondary={clientebanco.sexo} />
+            </ListItem>
+          </List>
+
           <Typography component="h1" variant="h5">
            Editar Cliente
           </Typography>
@@ -106,7 +139,7 @@ const EditarCliente = () => {
                   onChange={(e) => setCliente('email', e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -119,7 +152,7 @@ const EditarCliente = () => {
                   onChange={(e) => setCliente('telefone', e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth

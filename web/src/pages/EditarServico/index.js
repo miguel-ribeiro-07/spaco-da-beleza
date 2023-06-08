@@ -14,7 +14,16 @@ import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import {useNavigate} from 'react-router-dom'
 import moment from 'moment'
-
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import DescriptionIcon from '@mui/icons-material/Description';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ContentCutIcon from '@mui/icons-material/ContentCut';
+import CheckIcon from '@mui/icons-material/Check';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import Divider from '@mui/material/Divider';
 
 
 
@@ -55,21 +64,6 @@ const EditarServico = () => {
   return (
       <Container component="main" maxWidth="xs">
         <Box
-        sx={{
-          marginTop:8,
-          display:'block'
-
-        }}
-        >
-          <Typography variant='h4' marginBottom={1}>Dados do serviço</Typography>
-          <Typography variant='h5' marginBottom={1}>Nome do serviço: {servicobanco.nomeServico}</Typography>
-          <Typography variant='h5' marginBottom={1}>Descrição: {servicobanco.descricao}</Typography>
-          <Typography variant='h5' marginBottom={1}>Duração: {moment(servicobanco.duracao).format('HH:mm')}</Typography>
-          <Typography variant='h5' marginBottom={1}>Preço: {`R$${servicobanco.preco}`}</Typography>
-          <Typography variant='h5' marginBottom={1}>Status: {servicobanco.status === 'A' ? 'Ativo': 'Inativo'}</Typography>
-        </Box>
-
-        <Box
           sx={{
             marginTop: 8,
             display: 'flex',
@@ -77,6 +71,47 @@ const EditarServico = () => {
             alignItems:'center',
           }}
         >
+          <Typography component="h1" variant="h5">
+           Dados do cliente
+          </Typography>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <ListItem>
+              <ListItemAvatar>
+                <ContentCutIcon/>
+              </ListItemAvatar>
+              <ListItemText primary="Nome" secondary={servicobanco.nomeServico} />
+            </ListItem>
+            <Divider/>
+            <ListItem>
+              <ListItemAvatar>
+                <DescriptionIcon/>
+              </ListItemAvatar>
+              <ListItemText primary="Descrição do serviço" secondary={servicobanco.descricao} />
+            </ListItem>
+            <Divider/>
+            <ListItem>
+              <ListItemAvatar>
+                  <AttachMoneyIcon/>
+              </ListItemAvatar>
+              <ListItemText primary="Preço" secondary={`R$${servicobanco.preco}`} />
+            </ListItem>
+            <Divider/>
+            <ListItem>
+              <ListItemAvatar>
+                <CheckIcon/>
+              </ListItemAvatar>
+              <ListItemText primary="Status atual" secondary={servicobanco.status} />
+            </ListItem>
+            <Divider/>
+            <ListItem>
+              <ListItemAvatar>
+                <AccessTimeIcon/>
+              </ListItemAvatar>
+              <ListItemText primary="Duração do serviço" secondary={`${moment(servicobanco.duracao).format('HH:mm')} Hrs`} />
+            </ListItem>
+            <Divider/>
+          </List>
+
           <Typography component="h1" variant="h5">
            Editar servico
           </Typography>

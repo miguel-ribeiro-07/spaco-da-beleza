@@ -15,12 +15,14 @@ import GroupIcon from '@mui/icons-material/Group';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link, useLocation } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom'
 import '../../styles.css'
 
 const Header = () =>{
 
     const location = useLocation()
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const navigate = useNavigate()
 
     const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
@@ -95,6 +97,7 @@ const Header = () =>{
                         <AccountCircle/>
                     </IconButton>
                     <IconButton
+                        onClick={() => navigate('/')}
                         size="large"
                         aria-label="logout">
                         <LogoutIcon/>
