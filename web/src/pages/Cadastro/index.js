@@ -145,7 +145,7 @@ const Cadastro = () => {
                   color="inherit" 
                   size="small" 
                   onClick={() => {setComponent('sucessSignUp', false)
-                  navigate('/login')
+                  navigate('/')
                   }
                   }>
                     Faça o login!
