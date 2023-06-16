@@ -69,6 +69,12 @@ const Cadastro = () => {
                   autoFocus
                   value={clientecadastro.nome}
                   onChange={(e) => setCliente('nome', e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'purple',
+                      borderWidth: '3px',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -81,6 +87,12 @@ const Cadastro = () => {
                   autoComplete="email"
                   value={clientecadastro.email}
                   onChange={(e) => setCliente('email', e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'purple',
+                      borderWidth: '3px',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -93,6 +105,12 @@ const Cadastro = () => {
                   autoComplete="telefone"
                   value={clientecadastro.telefone}
                   onChange={(e) => setCliente('telefone', e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'purple',
+                      borderWidth: '3px',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -106,6 +124,12 @@ const Cadastro = () => {
                   autoComplete="new-password"
                   value={clientecadastro.senha}
                   onChange={(e) => setCliente('senha', e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'purple',
+                      borderWidth: '3px',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -121,6 +145,12 @@ const Cadastro = () => {
                   autoComplete="sexo"
                   value={clientecadastro.sexo}
                   onChange={(e) => setCliente('sexo', e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'purple',
+                      borderWidth: '3px',
+                    },
+                  }}
                 >
                 <MenuItem key={'F'} value={'Feminino'}>Feminino</MenuItem>
                 <MenuItem key={'M'} value={'Masculino'}>Masculino</MenuItem>
@@ -157,7 +187,7 @@ const Cadastro = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 Já possui uma conta? 
-                <Link href="/">
+                <Link href="/" style={{textDecoration:"none"}} sx={{color:'white'}} >
                    Faça o login
                 </Link>
               </Grid>

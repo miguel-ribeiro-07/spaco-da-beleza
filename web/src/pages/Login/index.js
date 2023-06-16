@@ -68,6 +68,12 @@ const Login = () => {
                   autoComplete="email"
                   value={clientecadastro.email}
                   onChange={(e) => setCliente('email', e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'purple',
+                      borderWidth: '3px',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -82,6 +88,12 @@ const Login = () => {
                   autoFocus
                   value={clientecadastro.nome}
                   onChange={(e) => setCliente('nome', e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'purple',
+                      borderWidth: '3px',
+                    },
+                  }}
                 />
               </Grid>
             </Grid>
