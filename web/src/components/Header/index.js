@@ -74,7 +74,7 @@ const Header = () =>{
                         </Link>
                         <Link to="/servicos"style={{textDecoration:"none"}}>
                             <MenuItem onClick={handleClose} style={{"color":"#8936b3", padding:"15px 15px"}}>
-                                <ContentCutIcon style={{padding:"0px 10px"}}/>Servicos
+                                <ContentCutIcon style={{padding:"0px 10px"}}/>Serviços
                             </MenuItem>
                         </Link>
                         <Link to="/horarios" style={{textDecoration:"none"}}>

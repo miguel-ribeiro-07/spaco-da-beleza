@@ -72,7 +72,7 @@ const EditarServico = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-           Dados do cliente
+           Dados do serviço
           </Typography>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <ListItem>
