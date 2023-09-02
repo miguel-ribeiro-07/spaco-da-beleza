@@ -14,6 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import '../../styles.css'
 
 
 
@@ -101,7 +102,7 @@ const rows = (servicos.map((servico) =>({
     return (
         <div style={{ height: 600, width: '100%' }}>
           <h1>Serviços</h1>
-          <Button style={{marginBottom:15, marginLeft:0, backgroundColor: '#8936b3'}} variant='contained' onClick={() => {
+          <Button style={{marginBottom:15, marginLeft:5, backgroundColor: 'var(--secondary)'}} variant='contained' onClick={() => {
             setComponent('disabled', false)
             dispatch(resetServico())
             navigate('/criar-servico')}}>ADICIONAR NOVO SERVIÇO</Button>
@@ -115,7 +116,7 @@ const rows = (servicos.map((servico) =>({
               border:3,
               borderColor:'#8936b3',
               '& .super-app-theme--header': {
-                backgroundColor: '#ff4dff',
+                backgroundColor: 'var(--primary)',
                 color: 'white',
               }
             }}

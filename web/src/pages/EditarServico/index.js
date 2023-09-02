@@ -24,6 +24,7 @@ import ContentCutIcon from '@mui/icons-material/ContentCut';
 import CheckIcon from '@mui/icons-material/Check';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Divider from '@mui/material/Divider';
+import '../../styles.css'
 
 
 
@@ -74,7 +75,7 @@ const EditarServico = () => {
           <Typography component="h1" variant="h5">
            Dados do serviço
           </Typography>
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          <List sx={{ width: '100%', maxWidth: 360}}>
             <ListItem>
               <ListItemAvatar>
                 <ContentCutIcon/>
@@ -213,7 +214,7 @@ const EditarServico = () => {
               disabled={components.disabled}
               variant="contained"
               onClick={() => update()}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor: 'var(--secondary)' }}
             >
               Atualizar Serviço
             </Button>

@@ -22,6 +22,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import WcIcon from '@mui/icons-material/Wc';
 import Divider from '@mui/material/Divider';
+import '../../styles.css'
 
 
 const EditarCliente = () => {
@@ -70,7 +71,7 @@ const EditarCliente = () => {
           <Typography component="h1" variant="h5">
            Dados do cliente
           </Typography>
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          <List sx={{ width: '100%', maxWidth: 360}}>
             <ListItem>
               <ListItemAvatar>
                 <Avatar>
@@ -176,7 +177,7 @@ const EditarCliente = () => {
               disabled={components.disabled}
               variant="contained"
               onClick={() => update()}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor: 'var(--secondary)'}}
             >
               Atualizar Cliente
             </Button>

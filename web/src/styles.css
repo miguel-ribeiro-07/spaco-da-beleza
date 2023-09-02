@@ -2,7 +2,18 @@
     --primary: #ff4dff;
     --secondary: #8936b3;
     --dark:#21232f;
-    --white:#FFFFFF;
+    --white:#e5e0f5;
     --sucess:#06d6a0;
     font-family: 'Poppins', sans-serif;
+    background-color: var(--white);
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body{
+    overflow: hidden;
+    margin: 0;
 }

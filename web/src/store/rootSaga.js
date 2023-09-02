@@ -4,8 +4,9 @@ import agendamento from './modules/agendamento/sagas'
 import clientes from './modules/cliente/sagas'
 import servico from './modules/servico/sagas'
 import horario from './modules/horario/sagas'
+import salao from './modules/salao/sagas'
 
 
 export default function* rootSaga(){
-    return yield all ([agendamento, clientes, servico, horario])
+    return yield all ([agendamento, clientes, servico, horario, salao])
 }

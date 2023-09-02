@@ -14,6 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import '../../styles.css'
 
 
 
@@ -108,9 +109,9 @@ const rows = (clientes.map((cliente) =>({
             sx={{
               boxShadow: 2,
               border: 3,
-              borderColor: '#8936b3',
+              borderColor: 'var(--secondary)',
               '& .super-app-theme--header': {
-                backgroundColor: '#8936b3',
+                backgroundColor: 'var(--secondary)',
                 color: 'white',
               },
               '& .MuiDataGrid-cell': {

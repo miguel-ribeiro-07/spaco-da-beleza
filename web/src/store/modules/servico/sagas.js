@@ -1,5 +1,5 @@
 import {takeLatest, all, call, put, select} from 'redux-saga/effects'
-import { updateServico, allServicos as allServicosAction, resetServico } from './actions'
+import { updateServico, allServicos as allServicosAction} from './actions'
 import types from './types'
 import api from '../../../services/api'
 
