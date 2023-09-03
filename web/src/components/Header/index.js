@@ -16,6 +16,8 @@ import ContentCutIcon from '@mui/icons-material/ContentCut';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link, useLocation } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import {updateCliente} from '../../store/modules/cliente/actions';
 import '../../styles.css'
 
 const Header = () =>{
@@ -23,6 +25,26 @@ const Header = () =>{
     const location = useLocation()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const cltId = localStorage.getItem('@userId')
+    const {clientelogin, components} = useSelector((state) => state.cliente)
+
+    
+    const setClienteLogin = (key, value) =>{
+        dispatch(updateCliente({
+        clientelogin: {...clientelogin, [key]:value},
+        }))
+    }
+
+
+
+    const setComponent = (component, state) =>{
+        dispatch(
+        updateCliente({
+            components: {... components, [component]:state},
+        })
+        )
+    }
 
     const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
@@ -97,9 +119,13 @@ const Header = () =>{
                         <AccountCircle/>
                     </IconButton>
                     <IconButton
-                        onClick={() => navigate('/')}
+                        onClick={() => {
+                            localStorage.clear()
+                            setClienteLogin('senha', '')
+                            navigate('/')}}
                         size="large"
-                        aria-label="logout">
+                        aria-label="logout"
+                        >
                         <LogoutIcon/>
                     </IconButton>
                 </Toolbar>

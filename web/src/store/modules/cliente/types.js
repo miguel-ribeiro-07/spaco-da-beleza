@@ -5,7 +5,8 @@ const types = {
     ADD_CLIENTE:'@cliente/ADD',
     DELETE_CLIENTE:'@cliente/DELETE',
     UPDATE_CLIENTEDB:'@cliente/UPDATEDB',
-    RESET_CLIENTE:'@cliente/RESET'
+    RESET_CLIENTE:'@cliente/RESET',
+    FILTER_CLIENTE:'@cliente/FILTER'
 }
 
 export default types

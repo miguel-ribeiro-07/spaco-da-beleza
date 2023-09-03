@@ -6,6 +6,7 @@ const INITIAL_STATE = {
         sucessSignUp: false,
         confirmDelete: false,
         sucessEdit:false,
+        notLogin:false,
         disabled:false
     },
     clientes:[],
@@ -21,6 +22,11 @@ const INITIAL_STATE = {
         telefone:'',
         sexo:'',
         senha:''
+    },
+    clientelogin:{
+        email:'',
+        senha:'',
+        found: null
     },
     clientebanco:{
         email:'',

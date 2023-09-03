@@ -27,3 +27,7 @@ export function updateClienteDB(){
 export function resetCliente(){
     return{type: types.RESET_CLIENTE}
 }
+
+export function filterCliente(){
+    return{type: types.FILTER_CLIENTE}
+}

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,7 +9,7 @@ import { MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import logo from '../../assets/logotipo.png'
-import { updateCliente, addCliente } from '../../store/modules/cliente/actions';
+import { updateCliente, filterCliente } from '../../store/modules/cliente/actions';
 import Container from '@mui/material/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import Alert from '@mui/material/Alert';
@@ -21,17 +22,20 @@ const Login = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {clientecadastro, components} = useSelector((state) => state.cliente)
+  const {clientelogin, components} = useSelector((state) => state.cliente)
+  const cltId = localStorage.getItem('@userId')
 
-  const save = () => {
-    dispatch(addCliente())
+  const entrar = () =>{
+     dispatch(filterCliente())
   }
-
-  const setCliente = (key, value) =>{
+  
+  const setClienteLogin = (key, value) =>{
     dispatch(updateCliente({
-      clientecadastro: {...clientecadastro, [key]:value},
+      clientelogin: {...clientelogin, [key]:value},
     }))
   }
+
+
 
   const setComponent = (component, state) =>{
     dispatch(
@@ -40,6 +44,32 @@ const Login = () => {
       })
     )
   }
+
+  useEffect(() =>{
+    if(cltId === '6490bb2b6ca1299fd2616db5'){
+      navigate('/agendamentos')
+    }else if(clientelogin.found === true){
+      navigate('/clientes')
+    }
+  },[])
+
+  useEffect(() =>{
+    if(cltId === '6490bb2b6ca1299fd2616db5'){
+      navigate('/agendamentos')
+      setClienteLogin('found', null)
+      setComponent('notLogin', false)
+    }else if(clientelogin.found === true){
+      navigate('/clientes')
+      setClienteLogin('found', null)
+      setComponent('notLogin', false)
+    }else if(clientelogin.found == false){
+      setComponent('notLogin', true)
+    }
+  },[cltId, clientelogin.found])
+
+
+
+  console.log(cltId, clientelogin.found)
   return (
     <div style={{ background: 'linear-gradient(to bottom, #ff4dff, #FFA2FF)', margin: '0px', height: '100vh', overflow:'hidden'}}>
       <Container component="main" maxWidth="xs">
@@ -66,8 +96,8 @@ const Login = () => {
                   label="Email"
                   name="email"
                   autoComplete="email"
-                  value={clientecadastro.email}
-                  onChange={(e) => setCliente('email', e.target.value)}
+                  value={clientelogin.email}
+                  onChange={(e) => setClienteLogin('email', e.target.value)}
                   sx={{
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: 'purple',
@@ -86,8 +116,8 @@ const Login = () => {
                   id="senha"
                   label="Senha"
                   autoFocus
-                  value={clientecadastro.nome}
-                  onChange={(e) => setCliente('nome', e.target.value)}
+                  value={clientelogin.nome}
+                  onChange={(e) => setClienteLogin('senha', e.target.value)}
                   sx={{
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: 'purple',
@@ -102,7 +132,7 @@ const Login = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={() => save()}
+              onClick={() => entrar()}
             >
               Entrar
             </Button>
@@ -114,6 +144,25 @@ const Login = () => {
                 </Link>
               </Grid>
             </Grid>
+            <Collapse in={components.notLogin}>
+              <Alert
+                variant="filled"
+                severity="error"
+                action={
+                  <Button 
+                  color="inherit" 
+                  size="small" 
+                  onClick={() => {
+                    setComponent('notLogin', false)
+                    setClienteLogin('found', null)
+                  }
+                  }>
+                    Ok!
+                  </Button>
+                }>
+                Usuário ou senha estão incorretos!
+              </Alert>
+            </Collapse>
           </Box>
         </Box>
       </Container>

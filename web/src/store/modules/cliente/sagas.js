@@ -96,10 +96,37 @@ export function* updateClienteDB(){
     }
 }
 
+export function* filterCliente() {
+    const {clientelogin} = yield select((state) => state.cliente)
+
+    try{
+        const {data:res} = yield call(api.post,'/cliente/filter', 
+        {
+            email: clientelogin.email,
+            senha: clientelogin.senha
+        })
+
+        if (res.error){
+            alert(res.message)
+            return false
+        }
+
+         if(res.localizado === true){
+            localStorage.setItem('@userId', res.id)
+            
+         }
+
+         yield put(updateCliente({clientelogin:{...clientelogin, found:res.localizado}}))
+    }catch(err){
+        alert(err.message)
+    }
+}
+
 export default all([
     takeLatest(types.ALL_CLIENTES, allClientes),
     takeLatest(types.GET_CLIENTE, getCliente),
     takeLatest(types.ADD_CLIENTE, addCliente),
     takeLatest(types.DELETE_CLIENTE, deleteCliente),
-    takeLatest(types.UPDATE_CLIENTEDB, updateClienteDB)
+    takeLatest(types.UPDATE_CLIENTEDB, updateClienteDB),
+    takeLatest(types.FILTER_CLIENTE, filterCliente)
 ])

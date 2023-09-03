@@ -56,8 +56,14 @@ router.delete('/:id', async(req, res) =>{
 //RECEBE OS FILTROS DE DADOS POR FILTERS
 router.post('/filter', async(req, res) =>{
     try{
-        const filtCliente = await Cliente.find(req.body)
-        res.json({error:false, filtCliente})
+        const filtCliente = await Cliente.findOne(req.body)
+
+        if(filtCliente){
+            res.json({localizado:true, id:filtCliente._id})
+        }else{
+            res.json({localizado:false})
+        }
+
     }catch(err){
         res.json({error:true, message:err.message})
     }
