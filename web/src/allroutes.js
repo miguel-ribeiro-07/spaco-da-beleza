@@ -14,10 +14,35 @@ import EditarCliente from "./pages/EditarCliente/"
 import CriarServico from "./pages/CriarServico";
 import EditarServico from "./pages/EditarServico"
 import Cadastro from "./pages/Cadastro"
+import Agenda from "./pages/Agenda";
 import Box from '@mui/material/Box';
 
   
   function Rotas() {
+
+      const sessionId = localStorage.getItem('@userId')
+
+      /*const ProtectedRoutes = ({sessionId }) => (
+        sessionId === '6490bb2b6ca1299fd2616db5' ? (
+          <>
+            <Route path="/agendamentos" element={<Agendamento />} />
+            <Route path="/clientes" element={<Clientes />} />
+            <Route path="/editar-cliente/:id" element={<EditarCliente />} />
+            <Route path="/servicos" element={<Servicos />} />
+            <Route path="/criar-servico" element={<CriarServico />} />
+            <Route path="/editar-servico/:id" element={<EditarServico />} />
+            <Route path="/horarios" element={<Horarios />} />
+          </>
+        ) : (
+          <Redirect to="/outra-rota" />
+        )
+      );*/
+
+
+      /*
+          <Route element={<ProtectedRoutes sessionId={sessionId} />} />
+          {Outras rotas públicas }
+      */
       return (
           <Box>
               <Router>
@@ -32,6 +57,7 @@ import Box from '@mui/material/Box';
                   <Route path="/criar-servico" element={<CriarServico />}/>
                   <Route path="/editar-servico/:id" element={<EditarServico />}/>
                   <Route path="/horarios" element={<Horarios/>} />
+                  <Route path="/agenda" element={<Agenda/>} />
                   </Routes>
               </Router>
           </Box>

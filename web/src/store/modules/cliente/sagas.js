@@ -113,7 +113,6 @@ export function* filterCliente() {
 
          if(res.localizado === true){
             localStorage.setItem('@userId', res.id)
-            
          }
 
          yield put(updateCliente({clientelogin:{...clientelogin, found:res.localizado}}))

@@ -68,8 +68,6 @@ const Login = () => {
   },[cltId, clientelogin.found])
 
 
-
-  console.log(cltId, clientelogin.found)
   return (
     <div style={{ background: 'linear-gradient(to bottom, #ff4dff, #FFA2FF)', margin: '0px', height: '100vh', overflow:'hidden'}}>
       <Container component="main" maxWidth="xs">
