@@ -40,16 +40,17 @@ router.post('/filter', async(req, res) =>{
 router.post('/dias-disponiveis', async(req, res) =>{
     try{
         //PEGA AS REQUISIÇÕES DO USUÁRIO
-        const {data, servicoId} = req.body
+        const {data, servicosId} = req.body
 
         //LOCALIZA O SERVIÇO, A DURAÇÃO DO SERVIÇO E OS HORÁRIOS DISPONIVEIS PARA ELE
         //const horarioInicioServ = await Horario.find({servicoId}).select('horaInicio')
         //const horarioFimServ = await Horario.find({servicoId}).select('horaFim')
-        const horarios = await Horario.find({servicoId})
-        const servicoDados = await Servico.findById(servicoId).select('duracao preco nomeServico')
+        const horarios = await Horario.find({servicosId})
+        const servicoDados = await Servico.findById(servicosId).select('duracao preco nomeServico')
 
         let agenda = []
         let lastDay = moment(data)
+
 
         //CONVERSOR DA DURAÇÃO DO SERVIÇO EM MINUTOS
         const servicoMinutos = ferramentas.hourToMinutes(moment(servicoDados.duracao).format("HH:mm"))
@@ -60,20 +61,22 @@ router.post('/dias-disponiveis', async(req, res) =>{
             ferramentas.SLOT_DURATION
         ).length
 
+
         /*VERIFICAR 7 DIAS DISPONÍVEIS NA AGENDA*/
         for (let i = 0; i <= 365 && agenda.length <= 7; i++){
             const espacosValidos = horarios.filter((horario) =>{
                 const diaSemanaDisponivel = horario.diaSemana.includes(moment(lastDay).day()) // 0 domingo a 6 sábado
-                const servicoDisponivel = horario.servicoId.includes(servicoId)
+                const servicoDisponivel = horario.servicosId.includes(servicosId)
                 return diaSemanaDisponivel && servicoDisponivel
             })
+
 
             if(espacosValidos.length > 0){
                 let todosHorariosDia = {}
 
                 //COLOCA OS HORÁRIOS DENTRO DOS SERVIÇOS RESPECTIVOS
                 for(let spaco of espacosValidos){
-                    for (let IDservicos of spaco.servicoId){
+                    for (let IDservicos of spaco.servicosId){
                         if(!todosHorariosDia[IDservicos]){
                             todosHorariosDia[IDservicos] = []
                         }
@@ -124,7 +127,7 @@ router.post('/dias-disponiveis', async(req, res) =>{
                 horariosLivres = horariosLivres.map((slot) => slot.filter((horario, index) => slot.length - index >= servicoSlots)).flat()
 
                 //FORMATAÇÃO PARA 2 EM 2
-                horariosLivres = _.chunk(horariosLivres, 2)
+                //horariosLivres = _.chunk(horariosLivres, 2)
                 
                 //REMOVER O SERVIÇO DO DIA CASO NÃO POSSUA HORÁRIOS
                 if(horariosLivres.length === 0){
