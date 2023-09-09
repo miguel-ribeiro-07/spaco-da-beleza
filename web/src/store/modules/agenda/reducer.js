@@ -1,14 +1,12 @@
 import produce from 'immer'
 import types from './types'
-import moment from 'moment'
 
 const INITIAL_STATE = {
-    servicos:null,
+    servicos:[],
     servico:{},
-    agenda:[],
+    fullagenda:[],
     agendamento:{
-        clienteId: null,
-        servicoId: null,
+        servicosId: null,
         data: null
     },
     form:{
@@ -23,13 +21,13 @@ function agenda(state = INITIAL_STATE, action){
     switch(action.type){
         case types.UPDATE_SERVICOS: {
             return produce (state, (draft) =>{
-                draft.servicos = action.servicos
+                draft.servicos = action.servicos.servicos
                 return draft
             })
         }
         case types.UPDATE_AGENDA:{
             return produce(state, (draft) =>{
-                draft.agenda = [...state.agenda, action.agenda]
+                draft.fullagenda = [...state.fullagenda, action.agenda]
             })
         }
         case types.UPDATE_AGENDAMENTO: {

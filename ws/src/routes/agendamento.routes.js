@@ -134,6 +134,7 @@ router.post('/dias-disponiveis', async(req, res) =>{
                     todosHorariosDia = _.omit(todosHorariosDia, servicoId)
                 }
 
+                //DEFINE SE NO ARRAY IRÁ TRAZER O ID OU NÃO DOS SERVIÇOS
                 todosHorariosDia[servicoId] = horariosLivres
 
                 //VERIFICA SE O SERVIÇO ESTÁ DISPONÍVEL NAQUELE DIA
