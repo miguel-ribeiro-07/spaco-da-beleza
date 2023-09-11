@@ -135,7 +135,7 @@ router.post('/dias-disponiveis', async(req, res) =>{
                 }
 
                 //DEFINE SE NO ARRAY IRÁ TRAZER O ID OU NÃO DOS SERVIÇOS
-                todosHorariosDia[servicoId] = horariosLivres
+                todosHorariosDia = horariosLivres
 
                 //VERIFICA SE O SERVIÇO ESTÁ DISPONÍVEL NAQUELE DIA
                 const totalServicos = Object.keys(todosHorariosDia).length

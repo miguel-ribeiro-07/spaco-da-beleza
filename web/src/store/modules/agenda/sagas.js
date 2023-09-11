@@ -1,7 +1,8 @@
 import {takeLatest, all, call, put, select} from 'redux-saga/effects'
 import types from './types'
 import api from '../../../services/api'
-import { updateServicos, updateAgendamento, updateAgenda } from './actions'
+import { updateServicos, updateAgenda, updateAgendamento } from './actions'
+import ferramentas from '../../../ferramentas'
 import moment from 'moment'
 
 export function* allServicos(){
@@ -20,16 +21,22 @@ export function* allServicos(){
 }
 
 export function* filterAgenda(){
-    const {agendamento} = yield select(state => state.agenda)
+    const {agendamento, form} = yield select(state => state.agenda)
     try{
         const {data: res} = yield call(api.post, '/agendamento/dias-disponiveis', {
             ...agendamento,
             data: moment().format('YYYY-MM-DD')
         })
 
-        console.log(res)
-
         yield put(updateAgenda(res.agenda))
+
+        
+        const {horariosDisponiveis, data} = yield call(ferramentas.selectAgendamento, res.agenda)
+        if (data === null) {
+            yield put(updateAgendamento({form:{...form, error:true}}))
+        }else{ 
+            yield put(updateAgendamento({agendamento:{...agendamento, data:moment(`${data}T${horariosDisponiveis[0]}`).format()}}))
+        }
 
         if(res.error){
             alert(res.message)

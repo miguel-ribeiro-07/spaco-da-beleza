@@ -6,13 +6,15 @@ const INITIAL_STATE = {
     servico:{},
     fullagenda:[],
     agendamento:{
+        clienteId: null,
         servicosId: null,
         data: null
     },
     form:{
         successMessage:false,
         modal:false,
-        disabled:false
+        disabled:false,
+        error:false
     }
 
 }
@@ -27,7 +29,7 @@ function agenda(state = INITIAL_STATE, action){
         }
         case types.UPDATE_AGENDA:{
             return produce(state, (draft) =>{
-                draft.fullagenda = [...state.fullagenda, action.agenda]
+                draft.fullagenda = action.agenda;
             })
         }
         case types.UPDATE_AGENDAMENTO: {

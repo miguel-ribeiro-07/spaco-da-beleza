@@ -15,7 +15,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import moment from 'moment'
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
 import '../../styles.css'
+import ferramentas from '../../ferramentas';
 
 
 const Agenda = () => {
@@ -23,6 +27,11 @@ const Agenda = () => {
   const dispatch = useDispatch()
   const {servicos, form, agendamento, fullagenda} = useSelector((state) => state.agenda)
   const chose = servicos.filter((e) => e._id === agendamento.servicosId)
+  const activeServices = servicos.filter((e) => e.status === "A")
+  const dataSelecionada = moment(agendamento.data).format('YYYY-MM-DD')
+  const horaSelecionada = moment(agendamento.data).format('HH:mm')
+
+  const {horariosDisponiveis} = ferramentas.selectAgendamento(fullagenda, dataSelecionada)
 
   const setForm = (component, state) =>{
     dispatch(
@@ -45,16 +54,24 @@ const Agenda = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 375,
+    width: 800,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 6,
   };
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body1,
+    padding: theme.spacing(3),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
+
   useEffect(() =>{
     dispatch(allServicos())
-    //setAgendamento('clienteId', localStorage.getItem('@userId'))
+    setAgendamento('clienteId', localStorage.getItem('@userId'))
   },[])
 
   function ServiceList(arr) {
@@ -77,8 +94,18 @@ const Agenda = () => {
     ));
   }
 
-  
-  console.log(agendamento, fullagenda)
+  function ListDatas(arr) {
+
+    return arr.map((data) => (
+      <div key={Object.keys(data)}>
+        <Item>{moment(Object.keys(data)[0]).format('YYYY-MM-DD')}</Item>
+      </div>
+    ));
+  }
+
+  console.log(form.error)
+
+
 
   return (
       <Container component="main" maxWidth="xs">
@@ -94,7 +121,7 @@ const Agenda = () => {
            Serviços disponíveis
           </Typography>
           <List sx={{ width: '100%', maxWidth: 400}}>
-            {ServiceList(servicos)}
+            {ServiceList(activeServices)}
           </List>
           <Modal
             open={form.modal}
@@ -125,7 +152,9 @@ const Agenda = () => {
                     </ListItem>
                     <Divider />
                   </List>
-
+                  <Stack direction="row" spacing={2} sx={{marginTop:5}}>
+                    {ListDatas(fullagenda)}
+                  </Stack>
                   </Grid>
               </Grid>
             </Box>

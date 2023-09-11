@@ -64,6 +64,7 @@ const Horarios = () =>{
 
   const dispatch = useDispatch()
   const {horarios, horario, servicos, components, behavior} = useSelector((state) => state.horario)
+  const activeServices = servicos.filter((e) => e.status === "A")
 
 
   const setComponent = (component, state) =>{
@@ -243,12 +244,12 @@ const Horarios = () =>{
                       disabled={components.disabled}
                       multiple
                       id="tags-outlined"
-                      value={servicos.filter((e) => {
+                      value={activeServices.filter((e) => {
                         for (let servID of horario.servicosId){
                           if (servID === e._id) return true
                         }
                       })}
-                      options={servicos}
+                      options={activeServices}
                       getOptionLabel={(option) => option.nomeServico}
                       filterSelectedOptions                    
                       onChange={(event, value) => setHorario('servicosId' , value.map((e) => e._id))}
