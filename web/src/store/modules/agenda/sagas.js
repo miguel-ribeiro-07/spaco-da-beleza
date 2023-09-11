@@ -29,8 +29,8 @@ export function* filterAgenda(){
         })
 
         yield put(updateAgenda(res.agenda))
+        yield put(updateAgendamento({form:{...form, error:false}}))
 
-        
         const {horariosDisponiveis, data} = yield call(ferramentas.selectAgendamento, res.agenda)
         if (data === null) {
             yield put(updateAgendamento({form:{...form, error:true}}))

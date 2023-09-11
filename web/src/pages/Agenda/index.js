@@ -14,12 +14,13 @@ import Grid from '@mui/material/Grid';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import '../../styles.css'
 import ferramentas from '../../ferramentas';
+moment.locale('pt-br')
 
 
 const Agenda = () => {
@@ -29,7 +30,7 @@ const Agenda = () => {
   const chose = servicos.filter((e) => e._id === agendamento.servicosId)
   const activeServices = servicos.filter((e) => e.status === "A")
   const dataSelecionada = moment(agendamento.data).format('YYYY-MM-DD')
-  const horaSelecionada = moment(agendamento.data).format('HH:mm')
+  let horaSelecionada = moment(agendamento.data).format('HH:mm')
 
   const {horariosDisponiveis} = ferramentas.selectAgendamento(fullagenda, dataSelecionada)
 
@@ -54,7 +55,7 @@ const Agenda = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: 375,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -63,10 +64,11 @@ const Agenda = () => {
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body1,
-    padding: theme.spacing(3),
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    flexGrow: 1,
   }));
 
   useEffect(() =>{
@@ -95,15 +97,30 @@ const Agenda = () => {
   }
 
   function ListDatas(arr) {
-
-    return arr.map((data) => (
-      <div key={Object.keys(data)}>
-        <Item>{moment(Object.keys(data)[0]).format('YYYY-MM-DD')}</Item>
-      </div>
-    ));
+    if (form.error === true) {
+      return <Typography variant="h5" component="h2" marginTop={0.5}>O proprietário não disponibilizou horários para esse serviço</Typography>
+    } else{
+        return arr.map((data) => (
+          <div key={Object.keys(data)}>
+            <Item >{`${ferramentas.diasSemana[moment(Object.keys(data)[0]).day()]} ${moment(Object.keys(data)[0]).format('DD/MMM')}`}</Item>
+          </div>
+        ));
+      }
   }
 
-  console.log(form.error)
+  function ListHorarios(arr) {
+    if (form.error === true) {
+      return <Typography variant="h5" component="h2" marginTop={0.5}>O proprietário não disponibilizou horários para esse serviço</Typography>
+    } else{
+        return arr.map((horario) => (
+          <div key={`Chave ${horario}`} >
+            <Item >{horario}</Item>
+          </div>
+        ));
+      }
+  }
+
+  console.log(agendamento)
 
 
 
@@ -152,8 +169,17 @@ const Agenda = () => {
                     </ListItem>
                     <Divider />
                   </List>
-                  <Stack direction="row" spacing={2} sx={{marginTop:5}}>
-                    {ListDatas(fullagenda)}
+                  <Stack spacing={{ xs:1, sm: 1 }} direction="row" flexWrap='wrap' >
+                    <Typography id="modal-modal-title" variant="h4" marginBottom={2} marginTop={1}>
+                        Selecione uma data
+                    </Typography>
+                      {ListDatas(fullagenda)}
+                  </Stack>
+                  <Stack spacing={{ xs:1, sm: 1 }} direction="row" flexWrap='wrap' >
+                    <Typography id="modal-modal-title" variant="h4" marginBottom={2} marginTop={3}>
+                        Selecione um horário
+                    </Typography>
+                    {ListHorarios(horariosDisponiveis)}
                   </Stack>
                   </Grid>
               </Grid>
