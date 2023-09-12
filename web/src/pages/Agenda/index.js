@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
@@ -30,7 +31,7 @@ const Agenda = () => {
   const chose = servicos.filter((e) => e._id === agendamento.servicosId)
   const activeServices = servicos.filter((e) => e.status === "A")
   const dataSelecionada = moment(agendamento.data).format('YYYY-MM-DD')
-  let horaSelecionada = moment(agendamento.data).format('HH:mm')
+  const horaSelecionada = moment(agendamento.data).format('HH:mm')
 
   const {horariosDisponiveis} = ferramentas.selectAgendamento(fullagenda, dataSelecionada)
 
@@ -50,6 +51,13 @@ const Agenda = () => {
     )
   }
 
+  const setAgendaStatus = (value, isTime = false) => {
+    const {horariosDisponiveis} = ferramentas.selectAgendamento(fullagenda, isTime ? dataSelecionada : value)
+    
+    let data = !isTime ? `${value}T${horariosDisponiveis[0]}` : `${dataSelecionada}T${value}`
+    setAgendamento('data', data)
+  }
+
   const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -59,16 +67,19 @@ const Agenda = () => {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 6,
+    p: 5,
   };
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
     flexGrow: 1,
+    borderColor: '#8936b3', // Defina a cor da borda desejada aqui
+    borderWidth: '1px', // Defina a largura da borda, se necessário
+    borderStyle: 'solid'
   }));
 
   useEffect(() =>{
@@ -102,7 +113,16 @@ const Agenda = () => {
     } else{
         return arr.map((data) => (
           <div key={Object.keys(data)}>
-            <Item >{`${ferramentas.diasSemana[moment(Object.keys(data)[0]).day()]} ${moment(Object.keys(data)[0]).format('DD/MMM')}`}</Item>
+            <Item 
+              style={{
+                color: dataSelecionada === Object.keys(data)[0] ? 'white' : 'black',
+                backgroundColor: dataSelecionada === Object.keys(data)[0] ? '#8936b3' : 'white',
+                fontWeight: dataSelecionada === Object.keys(data)[0] ? 'bold' : 'normal',
+                }}
+              onClick={() => {
+                setAgendaStatus(Object.keys(data)[0], false)
+              }}
+            >{`${ferramentas.diasSemana[moment(Object.keys(data)[0]).day()]} ${moment(Object.keys(data)[0]).format('DD/MMM')}`}</Item>
           </div>
         ));
       }
@@ -114,7 +134,16 @@ const Agenda = () => {
     } else{
         return arr.map((horario) => (
           <div key={`Chave ${horario}`} >
-            <Item >{horario}</Item>
+            <Item
+              style={{
+                color: horaSelecionada === horario ? 'white' : 'black',
+                backgroundColor: horaSelecionada === horario ? '#8936b3' : 'white',
+                fontWeight: horaSelecionada === horario ? 'bold' : 'normal',
+              }}
+              onClick={() => {
+                setAgendaStatus(horario, true)
+              }}
+            >{horario}</Item>
           </div>
         ));
       }
@@ -149,7 +178,7 @@ const Agenda = () => {
             <Box sx={modalStyle}>
               <Grid container spacing={1} item>
                   <Grid item xs={11}>
-                    <Typography id="modal-modal-title" variant="h4" component="h2" marginBottom={5} marginTop={0.5}>
+                    <Typography id="modal-modal-title" variant="h4" component="h2" marginBottom={2} marginTop={0.5}>
                       Agende seu horário
                     </Typography>
                   </Grid>
@@ -158,7 +187,6 @@ const Agenda = () => {
                       <CloseIcon fontSize="inherit" />
                     </IconButton>
                   </Grid>
-                  <Grid>
                   <List>
                   <Divider />
                   <ListItem>
@@ -167,21 +195,23 @@ const Agenda = () => {
                         secondary={<span style={{ fontSize: '19px'}}>{`Preço: R$${chose[0]?.preco}  - Duração: ${moment(chose[0]?.duracao).format('HH:mm')} ${moment(chose[0]?.duracao).format('HH:mm') === '00:30' ? 'min' : 'Hrs'}`}</span>}
                       />
                     </ListItem>
-                    <Divider />
-                  </List>
-                  <Stack spacing={{ xs:1, sm: 1 }} direction="row" flexWrap='wrap' >
-                    <Typography id="modal-modal-title" variant="h4" marginBottom={2} marginTop={1}>
+                  <Divider />
+                  <Stack spacing={{ xs:1}} direction="row" flexWrap='wrap' >
+                    <Typography id="modal-modal-title" variant="h4" marginBottom={3} marginTop={1} marginLeft={1}>
                         Selecione uma data
                     </Typography>
                       {ListDatas(fullagenda)}
                   </Stack>
-                  <Stack spacing={{ xs:1, sm: 1 }} direction="row" flexWrap='wrap' >
-                    <Typography id="modal-modal-title" variant="h4" marginBottom={2} marginTop={3}>
+                  <Divider sx={{marginTop:2}}/>
+                  <Stack spacing={{ xs:1}} direction="row" flexWrap='wrap' >
+                    <Typography id="modal-modal-title" variant="h4" marginBottom={3} marginTop={1} marginLeft={1}>
                         Selecione um horário
                     </Typography>
                     {ListHorarios(horariosDisponiveis)}
                   </Stack>
-                  </Grid>
+                  <Divider sx={{marginTop:2}}/>
+                  <Button  sx={{marginTop:2, marginLeft:1, backgroundColor: '#8936b3', display:`${form.error === true ? 'none' : 'block' }`}} variant='contained'>CONFIRMAR AGENDAMENTO</Button>
+                  </List>
               </Grid>
             </Box>
           </Modal>
