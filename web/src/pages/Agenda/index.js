@@ -9,7 +9,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import {useDispatch, useSelector} from 'react-redux'
-import { allServicos, updateAgendamento, filterAgenda } from '../../store/modules/agenda/actions';
+import { allServicos, updateAgendamento, filterAgenda, saveAgendamento } from '../../store/modules/agenda/actions';
 import { Divider } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import CloseIcon from '@mui/icons-material/Close';
@@ -28,10 +28,10 @@ const Agenda = () => {
 
   const dispatch = useDispatch()
   const {servicos, form, agendamento, fullagenda} = useSelector((state) => state.agenda)
-  const chose = servicos.filter((e) => e._id === agendamento.servicosId)
+  const chose = servicos.filter((e) => e._id === agendamento.servicoId)
   const activeServices = servicos.filter((e) => e.status === "A")
-  const dataSelecionada = moment(agendamento.data).format('YYYY-MM-DD')
-  const horaSelecionada = moment(agendamento.data).format('HH:mm')
+  const dataSelecionada = moment(agendamento.dataHora).format('YYYY-MM-DD')
+  const horaSelecionada = moment(agendamento.dataHora).format('HH:mm')
 
   const {horariosDisponiveis} = ferramentas.selectAgendamento(fullagenda, dataSelecionada)
 
@@ -55,7 +55,7 @@ const Agenda = () => {
     const {horariosDisponiveis} = ferramentas.selectAgendamento(fullagenda, isTime ? dataSelecionada : value)
     
     let data = !isTime ? `${value}T${horariosDisponiveis[0]}` : `${dataSelecionada}T${value}`
-    setAgendamento('data', data)
+    setAgendamento('dataHora', data)
   }
 
   const modalStyle = {
@@ -94,11 +94,13 @@ const Agenda = () => {
         <ListItem>
           <ListItemText
             primary={<span style={{ fontSize: '26px' }}>{service?.nomeServico}</span>}
-            secondary={<span style={{ fontSize: '16px', color:'var(--secondary)'}}>{`Preço: R$${service?.preco} - Duração: ${moment(service?.duracao).format('HH:mm')} ${moment(service?.duracao).format('HH:mm') === '00:30' ? 'min' : 'Hrs'}`}</span>}
+            secondary={<span style={{ fontSize: '16px', color:'var(--secondary)'}}>
+              {`Preço: R$${service?.preco} - Duração: ${moment(service?.duracao).format('HH:mm')}${moment(service?.duracao).format('HH:mm') === '00:30' ? 'min' : 'Hrs'}`}
+              </span>}
           />
           <Button variant='contained' style={{ backgroundColor: 'var(--secondary)' }} onClick={() => {
             setForm('modal', true);
-            setAgendamento('servicosId', service._id);
+            setAgendamento('servicoId', service._id);
             dispatch(filterAgenda())
           }}>Agendar</Button>
         </ListItem>
@@ -152,7 +154,6 @@ const Agenda = () => {
   console.log(agendamento)
 
 
-
   return (
       <Container component="main" maxWidth="xs">
         <Box
@@ -192,7 +193,10 @@ const Agenda = () => {
                   <ListItem>
                       <ListItemText
                         primary={<span style={{ fontSize: '22px' }}>{`Nome do serviço: ${chose[0]?.nomeServico}`}</span>}
-                        secondary={<span style={{ fontSize: '19px'}}>{`Preço: R$${chose[0]?.preco}  - Duração: ${moment(chose[0]?.duracao).format('HH:mm')} ${moment(chose[0]?.duracao).format('HH:mm') === '00:30' ? 'min' : 'Hrs'}`}</span>}
+                        secondary={<span style={{ fontSize: '19px'}}>
+                          {`Preço: R$${chose[0]?.preco}  - Duração: ${moment(chose[0]?.duracao).format('HH:mm')} ${moment(chose[0]?.duracao).format('HH:mm') === '00:30' ? 'min' : 'Hrs'} - Descrição: ${chose[0]?.descricao}`}
+                          </span>
+                        }
                       />
                     </ListItem>
                   <Divider />
@@ -210,7 +214,7 @@ const Agenda = () => {
                     {ListHorarios(horariosDisponiveis)}
                   </Stack>
                   <Divider sx={{marginTop:2}}/>
-                  <Button  sx={{marginTop:2, marginLeft:1, backgroundColor: '#8936b3', display:`${form.error === true ? 'none' : 'block' }`}} variant='contained'>CONFIRMAR AGENDAMENTO</Button>
+                  <Button  onClick={() => dispatch(saveAgendamento())}  sx={{marginTop:2, marginLeft:1, backgroundColor: '#8936b3', display:`${form.error === true ? 'none' : 'block' }`}} variant='contained'>CONFIRMAR AGENDAMENTO</Button>
                   </List>
               </Grid>
             </Box>

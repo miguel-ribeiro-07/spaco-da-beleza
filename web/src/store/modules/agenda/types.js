@@ -3,7 +3,8 @@ const types = {
     UPDATE_SERVICOS: '@agenda/UPDATE_SERVICOS',
     UPDATE_AGENDAMENTO:'@agenda/UPDATE_AGENDAMENTO',
     FILTER_AGENDA:'@agenda/FILTER_AGENDA',
-    UPDATE_AGENDA:'@agenda/UPDATE_AGENDA'
+    UPDATE_AGENDA:'@agenda/UPDATE_AGENDA',
+    SAVE_AGENDAMENTO: '@salao/SAVE_AGENDAMENTO'
 }
 
 export default types

@@ -7,8 +7,8 @@ const INITIAL_STATE = {
     fullagenda:[],
     agendamento:{
         clienteId: null,
-        servicosId: null,
-        data: null
+        servicoId: null,
+        dataHora: null
     },
     form:{
         successMessage:false,

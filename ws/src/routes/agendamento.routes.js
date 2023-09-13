@@ -40,16 +40,14 @@ router.post('/filter', async(req, res) =>{
 router.post('/dias-disponiveis', async(req, res) =>{
     try{
         //PEGA AS REQUISIÇÕES DO USUÁRIO
-        const {data, servicosId} = req.body
+        const {dataHora, servicoId} = req.body
 
         //LOCALIZA O SERVIÇO, A DURAÇÃO DO SERVIÇO E OS HORÁRIOS DISPONIVEIS PARA ELE
-        //const horarioInicioServ = await Horario.find({servicoId}).select('horaInicio')
-        //const horarioFimServ = await Horario.find({servicoId}).select('horaFim')
-        const horarios = await Horario.find({servicosId})
-        const servicoDados = await Servico.findById(servicosId).select('duracao preco nomeServico')
+        const horarios = await Horario.find({servicoId})
+        const servicoDados = await Servico.findById(servicoId).select('duracao preco nomeServico')
 
         let agenda = []
-        let lastDay = moment(data)
+        let lastDay = moment(dataHora)
 
 
         //CONVERSOR DA DURAÇÃO DO SERVIÇO EM MINUTOS
@@ -66,30 +64,36 @@ router.post('/dias-disponiveis', async(req, res) =>{
         for (let i = 0; i <= 365 && agenda.length <= 7; i++){
             const espacosValidos = horarios.filter((horario) =>{
                 const diaSemanaDisponivel = horario.diaSemana.includes(moment(lastDay).day()) // 0 domingo a 6 sábado
-                const servicoDisponivel = horario.servicosId.includes(servicosId)
+                const servicoDisponivel = horario.servicosId.includes(servicoId)
                 return diaSemanaDisponivel && servicoDisponivel
             })
 
+            const teste = horarios.filter((horario) =>{
+                const ss = horario.servicosId.includes(servicoId)
+            
+                return ss
+            })
+            
 
             if(espacosValidos.length > 0){
                 let todosHorariosDia = {}
 
                 //COLOCA OS HORÁRIOS DENTRO DOS SERVIÇOS RESPECTIVOS
                 for(let spaco of espacosValidos){
-                    for (let IDservicos of spaco.servicosId){
-                        if(!todosHorariosDia[IDservicos]){
-                            todosHorariosDia[IDservicos] = []
+                    
+                        if(!todosHorariosDia[servicoId]){
+                            todosHorariosDia[servicoId] = []
                         }
-
-                        todosHorariosDia[IDservicos] = [
-                            ...todosHorariosDia[IDservicos],
+                        todosHorariosDia[servicoId] = [
+                            ...todosHorariosDia[servicoId],
                             ...ferramentas.sliceMinutes(
                             ferramentas.mergeDateTime(lastDay, spaco.horaInicio),
                             ferramentas.mergeDateTime(lastDay, spaco.horaFim),
                             ferramentas.SLOT_DURATION 
                         )]
-                    }
                 }
+
+
                 //RECEBE TODOS AGENDAMENTOS DO DIA SELECIONADO
                 for (let servicoId of Object.keys(todosHorariosDia)){
                     const agendamentos = await Agendamento.find({
@@ -98,6 +102,7 @@ router.post('/dias-disponiveis', async(req, res) =>{
                             $lte:moment(lastDay).endOf('day')
                         }
                     }).select('dataHora servicoId').populate('servicoId', 'duracao')
+
 
                     //RECEBE QUAIS HORÁRIOS JÁ ESTÃO AGENDADOS NO DIA SELECIONADO
                     let horariosOcupados = agendamentos.map((agendamento) => ({

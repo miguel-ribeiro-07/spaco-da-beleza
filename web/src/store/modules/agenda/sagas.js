@@ -25,8 +25,9 @@ export function* filterAgenda(){
     try{
         const {data: res} = yield call(api.post, '/agendamento/dias-disponiveis', {
             ...agendamento,
-            data: moment().format('YYYY-MM-DD')
+            dataHora: moment().format('YYYY-MM-DD')
         })
+
 
         yield put(updateAgenda(res.agenda))
         yield put(updateAgendamento({form:{...form, error:false}}))
@@ -35,7 +36,7 @@ export function* filterAgenda(){
         if (data === null) {
             yield put(updateAgendamento({form:{...form, error:true}}))
         }else{ 
-            yield put(updateAgendamento({agendamento:{...agendamento, data:moment(`${data}T${horariosDisponiveis[0]}`).format()}}))
+            yield put(updateAgendamento({agendamento:{...agendamento, dataHora:moment(`${data}T${horariosDisponiveis[0]}`).format()}}))
         }
 
         if(res.error){
@@ -47,7 +48,23 @@ export function* filterAgenda(){
     }
 }
 
+export function* saveAgendamento(){
+    const {agendamento} = yield select(state => state.agenda)
+    try{
+        const {data: res} = yield call(api.post, '/agendamento', agendamento)
+        if(res.error){
+            alert(res.message)
+            return false
+        }
+
+        alert('Agendado com sucesso!')
+    }catch(err){
+        alert(err.message)
+    }
+}
+
 export default all([
     takeLatest(types.ALL_SERVICOS, allServicos),
-    takeLatest(types.FILTER_AGENDA, filterAgenda)
+    takeLatest(types.FILTER_AGENDA, filterAgenda),
+    takeLatest(types.SAVE_AGENDAMENTO, saveAgendamento),
 ])

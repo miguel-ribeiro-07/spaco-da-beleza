@@ -19,3 +19,9 @@ export function updateAgenda(agenda){
 export function filterAgenda(){
     return {type: types.FILTER_AGENDA}
 }
+
+export function saveAgendamento(){
+    return {type: types.SAVE_AGENDAMENTO}
+}
+
+
