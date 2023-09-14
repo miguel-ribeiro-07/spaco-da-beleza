@@ -67,12 +67,6 @@ router.post('/dias-disponiveis', async(req, res) =>{
                 const servicoDisponivel = horario.servicosId.includes(servicoId)
                 return diaSemanaDisponivel && servicoDisponivel
             })
-
-            const teste = horarios.filter((horario) =>{
-                const ss = horario.servicosId.includes(servicoId)
-            
-                return ss
-            })
             
 
             if(espacosValidos.length > 0){
@@ -117,6 +111,7 @@ router.post('/dias-disponiveis', async(req, res) =>{
                     //RECECUPERAR TODOS OS SLOTS ENTRE AGENDAMENTOS
                     horariosOcupados = horariosOcupados.map(horario => ferramentas.sliceMinutes(horario.inicio, horario.final, ferramentas.SLOT_DURATION)).flat()
 
+
                     //REMOVENDO OS HORÁRIOS JÁ AGENDADOS
                     let horariosLivres = ferramentas.splitByValue(todosHorariosDia[servicoId].map(
                         (horarioLivre) =>{
@@ -125,29 +120,36 @@ router.post('/dias-disponiveis', async(req, res) =>{
                             : horarioLivre
                         }),'-'
                     )
-                //VERIFICANDO SE EXISTE ESPAÇO SUFICIENTE NO SLOT
-                horariosLivres = horariosLivres.filter((horarios) => horarios.length >= servicoSlots)
 
-                //VERIFICANDO SE OS HORÁRIOS DENTRO DO SLOT TEM A CONTINUIDADE (EM HORAS) NECESSÁRIAS
-                horariosLivres = horariosLivres.map((slot) => slot.filter((horario, index) => slot.length - index >= servicoSlots)).flat()
+                    //VERIFICANDO SE EXISTE ESPAÇO SUFICIENTE NO SLOT
+                    horariosLivres = horariosLivres.filter((horarios) => horarios.length >= servicoSlots)
 
+
+                    //VERIFICANDO SE OS HORÁRIOS DENTRO DO SLOT TEM A CONTINUIDADE (EM HORAS) NECESSÁRIAS
+                    horariosLivres = horariosLivres.map((slot) => slot.filter((horario, index) => slot.length - index >= servicoSlots)).flat()
+
+
+                    //CONSULTA SE O HORÁRIO É MENOR OU IGUAL AO HORÁRIO ATUAL
+                    let dataHoje = moment()
+                    if (dataHoje.format('YY-MM-DD') == moment(lastDay).format('YY-MM-DD')){
+                        horariosLivres = horariosLivres.filter((horario) => horario >= dataHoje.format('HH:MM'))
+                    }
                 
-                //REMOVER O SERVIÇO DO DIA CASO NÃO POSSUA HORÁRIOS
-                if(horariosLivres.length === 0){
-                    todosHorariosDia = _.omit(todosHorariosDia, servicoId)
-                } else{
-                    //DEFINE SE NO ARRAY IRÁ TRAZER O ID OU NÃO DOS SERVIÇOS
-                    todosHorariosDia = horariosLivres
-                }
+                    
+                    //REMOVER O SERVIÇO DO DIA CASO NÃO POSSUA HORÁRIOS
+                    if(horariosLivres.length === 0){
+                        todosHorariosDia = _.omit(todosHorariosDia, servicoId)
+                    } else{
+                        //DEFINE SE NO ARRAY IRÁ TRAZER O ID OU NÃO DOS SERVIÇOS
+                        todosHorariosDia = horariosLivres
+                    }
 
-                console.log(horariosLivres)
+                    //VERIFICA SE O SERVIÇO ESTÁ DISPONÍVEL NAQUELE DIA
+                    const totalServicos = Object.keys(todosHorariosDia).length
 
-                //VERIFICA SE O SERVIÇO ESTÁ DISPONÍVEL NAQUELE DIA
-                const totalServicos = Object.keys(todosHorariosDia).length
-
-                if (totalServicos > 0){
-                    agenda.push({[lastDay.format('YYYY-MM-DD')]:todosHorariosDia})
-                }
+                    if (totalServicos > 0){
+                        agenda.push({[lastDay.format('YYYY-MM-DD')]:todosHorariosDia})
+                    }
                 }
             }
             lastDay = lastDay.add(1, 'day')
