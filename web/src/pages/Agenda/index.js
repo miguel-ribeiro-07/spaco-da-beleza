@@ -11,6 +11,8 @@ import ListItemText from '@mui/material/ListItemText';
 import {useDispatch, useSelector} from 'react-redux'
 import { allServicos, updateAgendamento, filterAgenda, saveAgendamento } from '../../store/modules/agenda/actions';
 import { Divider } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
@@ -21,7 +23,7 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import '../../styles.css'
 import ferramentas from '../../ferramentas';
-moment.locale('pt-br')
+
 
 
 const Agenda = () => {
@@ -87,6 +89,10 @@ const Agenda = () => {
     setAgendamento('clienteId', localStorage.getItem('@userId'))
   },[])
 
+  useEffect(() =>{
+    setForm('disabled', false)
+  },[form.modal])
+
   function ServiceList(arr) {
     return arr.map((service) => (
       <div key={service._id}>
@@ -110,6 +116,7 @@ const Agenda = () => {
   }
 
   function ListDatas(arr) {
+    let i = 0
     if (form.error === true) {
       return <Typography variant="h5" component="h2" marginTop={0.5}>O proprietário não disponibilizou horários para esse serviço</Typography>
     } else{
@@ -190,7 +197,7 @@ const Agenda = () => {
                   </Grid>
                   <List>
                   <Divider />
-                  <ListItem>
+                    <ListItem>
                       <ListItemText
                         primary={<span style={{ fontSize: '22px' }}>{`Nome do serviço: ${chose[0]?.nomeServico}`}</span>}
                         secondary={<span style={{ fontSize: '19px'}}>
@@ -214,8 +221,35 @@ const Agenda = () => {
                     {ListHorarios(horariosDisponiveis)}
                   </Stack>
                   <Divider sx={{marginTop:2}}/>
-                  <Button  onClick={() => dispatch(saveAgendamento())}  sx={{marginTop:2, marginLeft:1, backgroundColor: '#8936b3', display:`${form.error === true ? 'none' : 'block' }`}} variant='contained'>CONFIRMAR AGENDAMENTO</Button>
+                  <Button
+                    disabled={form.disabled}
+                    onClick={() => { 
+                      setForm('successMessage', true) 
+                      dispatch(saveAgendamento())
+                    }}  
+                    sx={{marginTop:2, marginLeft:1, backgroundColor: '#8936b3', display:`${form.error === true ? 'none' : 'block' }`}} variant='contained'>
+                      CONFIRMAR AGENDAMENTO
+                  </Button>
                   </List>
+                  <Collapse in={form.successMessage}>
+                    <Alert
+                      sx={{marginLeft:1, marginTop:1}}
+                      variant="filled"
+                      severity="success"
+                      action={
+                        <Button 
+                        color="inherit" 
+                        size="small" 
+                        onClick={() => {
+                        setForm('successMessage', false)
+                        }
+                        }>
+                          Ok!
+                        </Button>
+                      }>
+                      Pedido agendado com sucesso!
+                    </Alert>
+                  </Collapse>  
               </Grid>
             </Box>
           </Modal>

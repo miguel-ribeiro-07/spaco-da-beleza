@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const moment = require('moment')
-const _ = require('chunk')
 const Agendamento = require('../models/agendamento')
 const Servico = require('../models/servicos')
 const Horario = require('../models/horarios')
 const ferramentas = require('../services/ferramentas')
+const _ = require('lodash');
 
 //CADASTRAR AGENDAMENTO
 router.post('/', async(req, res) => {
@@ -131,16 +131,16 @@ router.post('/dias-disponiveis', async(req, res) =>{
                 //VERIFICANDO SE OS HORÁRIOS DENTRO DO SLOT TEM A CONTINUIDADE (EM HORAS) NECESSÁRIAS
                 horariosLivres = horariosLivres.map((slot) => slot.filter((horario, index) => slot.length - index >= servicoSlots)).flat()
 
-                //FORMATAÇÃO PARA 2 EM 2
-                //horariosLivres = _.chunk(horariosLivres, 2)
                 
                 //REMOVER O SERVIÇO DO DIA CASO NÃO POSSUA HORÁRIOS
                 if(horariosLivres.length === 0){
                     todosHorariosDia = _.omit(todosHorariosDia, servicoId)
+                } else{
+                    //DEFINE SE NO ARRAY IRÁ TRAZER O ID OU NÃO DOS SERVIÇOS
+                    todosHorariosDia = horariosLivres
                 }
 
-                //DEFINE SE NO ARRAY IRÁ TRAZER O ID OU NÃO DOS SERVIÇOS
-                todosHorariosDia = horariosLivres
+                console.log(horariosLivres)
 
                 //VERIFICA SE O SERVIÇO ESTÁ DISPONÍVEL NAQUELE DIA
                 const totalServicos = Object.keys(todosHorariosDia).length

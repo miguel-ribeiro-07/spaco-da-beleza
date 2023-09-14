@@ -49,7 +49,7 @@ export function* filterAgenda(){
 }
 
 export function* saveAgendamento(){
-    const {agendamento} = yield select(state => state.agenda)
+    const {agendamento, form} = yield select(state => state.agenda)
     try{
         const {data: res} = yield call(api.post, '/agendamento', agendamento)
         if(res.error){
@@ -57,7 +57,7 @@ export function* saveAgendamento(){
             return false
         }
 
-        alert('Agendado com sucesso!')
+        yield put(updateAgendamento({form:{...form, disabled:true}}))
     }catch(err){
         alert(err.message)
     }
