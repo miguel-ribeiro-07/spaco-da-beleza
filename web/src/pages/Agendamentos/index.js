@@ -3,8 +3,11 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import {useDispatch, useSelector} from 'react-redux'
-import { filterAgendamentos } from '../../store/modules/agendamento/actions'
+import { filterAgendamentos, getAgendamento } from '../../store/modules/agendamento/actions'
 import ferramentas from '../../ferramentas'
+import { Modal } from '@mui/material'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 const localizer = momentLocalizer(moment)
 
@@ -12,10 +15,31 @@ const localizer = momentLocalizer(moment)
 const Agendamentos = () =>{
 
     const dispatch = useDispatch()
-    const {agendamentos} = useSelector((state) => state.agendamento)
+    const {agendamentos, agendamento, components} = useSelector((state) => state.agendamento)
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 375,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 6,
+      };
+
+      const setComponent = (component, state) =>{
+        dispatch(
+          getAgendamento({
+            components: {... components, [component]:state},
+          })
+        )
+      }
 
 
     const formatEventos = agendamentos.map((agendamento) => ({
+        resource: agendamento,
         title:`${agendamento.servicoId.nomeServico} - ${agendamento.clienteId.nome}`,
         start:moment(agendamento.dataHora).toDate(),
         end:moment(agendamento.dataHora).add(ferramentas.hourToMinutes(moment(agendamento.servicoId.duracao).format('HH:mm')), 'minutes').toDate()
@@ -44,24 +68,45 @@ const Agendamentos = () =>{
         // eslint-disable-next-line
     }, [])
 
+    console.log(agendamento)
+
     return (
         <div className="col p-5 overflow-auto h-100">
             <div className="row">
                 <div className="col-12">
                     <h1 className="mb-4">Agendamentos</h1>
                     <Calendar
-                    localizer={localizer}
-                    onRangeChange={(periodo) =>{
-                    const {start, end} = formatRange(periodo)
-                    dispatch(filterAgendamentos(start, end)
-                    )
-                    }}
-                    events={formatEventos}
-                    defaultView="week"
-                    selectable
-                    popup
-                    style={{ height: 600 }}
+                        onSelectEvent={(e) => {
+                            dispatch(getAgendamento({
+                            agendamento: e.resource
+                            }))
+                            setComponent('modal', true);
+                        }}
+                        localizer={localizer}
+                        onRangeChange={(periodo) =>{
+                        const {start, end} = formatRange(periodo)
+                        dispatch(filterAgendamentos(start, end)
+                        )
+                        }}
+                        events={formatEventos}
+                        defaultView="week"
+                        selectable
+                        popup
+                        style={{ height: 600 }}
                     />
+                    <Modal
+                        open={components.modal}
+                        onClose={() => setComponent('modal', false)}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography variant='h4'>Dados do agendamento</Typography>
+                            <Typography variant='h5'marginTop={3} >Nome do cliente: {agendamento.clienteId.nome}</Typography>
+                            <Typography variant='h5'marginTop={2} >Tipo de serviço: {agendamento.servicoId.nomeServico}</Typography>
+                            <Typography variant='h5'marginTop={2} >Data e hora: {moment(agendamento.dataHora).format('DD/MM - HH:mm')}</Typography>
+                        </Box>
+                    </Modal>
                 </div>
             </div>
         </div>

@@ -11,3 +11,7 @@ export function filterAgendamentos(start, end){
 export function updateAgendamento(agendamentos){
     return {type: types.UPDATE_AGENDAMENTO, agendamentos}
 }
+
+export function getAgendamento(payload){
+    return {type: types.GET_AGENDAMENTO, payload}
+}
