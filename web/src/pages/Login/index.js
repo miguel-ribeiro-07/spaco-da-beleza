@@ -49,7 +49,7 @@ const Login = () => {
     if(cltId === '6490bb2b6ca1299fd2616db5'){
       navigate('/agendamentos')
     }else if(clientelogin.found === true){
-      navigate('/clientes')
+      navigate('/agenda')
     }
   },[])
 
@@ -59,7 +59,7 @@ const Login = () => {
       setClienteLogin('found', null)
       setComponent('notLogin', false)
     }else if(clientelogin.found === true){
-      navigate('/clientes')
+      navigate('/agenda')
       setClienteLogin('found', null)
       setComponent('notLogin', false)
     }else if(clientelogin.found == false){

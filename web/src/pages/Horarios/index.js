@@ -103,7 +103,6 @@ const Horarios = () =>{
     setComponent('disabled', false)
     dispatch(allHorarios())
   }, [components.modal])
-
   
   const formatEvents = horarios.map((horario) => 
   horario.diaSemana.map((dia) => ({

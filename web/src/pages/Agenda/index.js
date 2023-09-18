@@ -23,6 +23,7 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import '../../styles.css'
 import ferramentas from '../../ferramentas';
+moment.locale('pt-br')
 
 
 
@@ -157,6 +158,7 @@ const Agenda = () => {
         ));
       }
   }
+
 
   console.log(agendamento)
 

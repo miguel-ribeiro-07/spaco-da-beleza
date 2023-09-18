@@ -24,6 +24,7 @@ const Clientes = () =>{
 
   const dispatch = useDispatch()
   const {clientes, components, clientebanco} = useSelector((state) => state.cliente)
+  const filtClt = clientes.filter((e) => e._id !== '6490bb2b6ca1299fd2616db5')
 
 
   const setComponent = (component, state) =>{
@@ -88,7 +89,7 @@ const columns = [
   }
 ];
 
-const rows = (clientes.map((cliente) =>({
+const rows = (filtClt.map((cliente) =>({
     id:cliente._id,
     nome:cliente.nome,
     email:cliente.email,
