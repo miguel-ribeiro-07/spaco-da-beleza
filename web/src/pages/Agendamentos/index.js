@@ -100,7 +100,7 @@ const Agendamentos = () =>{
                         defaultView="week"
                         selectable
                         popup
-                        style={{ height: 600 }}
+                        style={{ height: 600}}
                     />
                     <Modal
                         open={components.modal}
