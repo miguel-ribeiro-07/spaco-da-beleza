@@ -161,4 +161,13 @@ router.post('/dias-disponiveis', async(req, res) =>{
     }
 })
 
+router.delete('/:id', async(req, res) =>{
+    try{
+        await Agendamento.findByIdAndDelete(req.params.id)
+        res.json({error:false})
+    }catch(err){
+        res.json({error:true, message:err.message})
+    }
+})
+
 module.exports = router

@@ -8,7 +8,8 @@ const INITIAL_STATE = {
         servicoId:''
     },
     components:{
-        modal:false
+        modal:false,
+        confirmDelete:false
     }
 }
 

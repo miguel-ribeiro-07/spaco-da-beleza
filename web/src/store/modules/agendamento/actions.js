@@ -15,3 +15,7 @@ export function updateAgendamento(agendamentos){
 export function getAgendamento(payload){
     return {type: types.GET_AGENDAMENTO, payload}
 }
+
+export function deleteAgendamento(){
+    return {type: types.DELETE_AGENDAMENTO}
+}
