@@ -59,7 +59,7 @@ const Header = () =>{
 
     return (
         <Box>
-            <AppBar sx={location.pathname === '/cadastro' || location.pathname === '/' ? 'display:none':'display:block'}
+            <AppBar sx={location.pathname === '/cadastro' || location.pathname === '/spaco-da-beleza' ? 'display:none':'display:block'}
              position='static' 
              style={{ "backgroundImage": "linear-gradient(to bottom, #ff4dff, #FFA2FF)", borderRadius: "15px", marginLeft: 2, marginTop: 2, marginRight: 2 }}>
                 <Toolbar>
@@ -129,7 +129,7 @@ const Header = () =>{
                             localStorage.clear()
                             setClienteLogin('senha', '')
                             setAdm(null)
-                            navigate('/')}}
+                            navigate('/spaco-da-beleza')}}
                         size="large"
                         aria-label="logout"
                         >

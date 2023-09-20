@@ -188,7 +188,7 @@ const Cadastro = () => {
                   dispatch(updateCliente({
                     components: {... components, disabled:true},
                   }))
-                  navigate('/')
+                  navigate('/spaco-da-beleza')
                   }
                   }>
                     Faça o login!
@@ -200,7 +200,7 @@ const Cadastro = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 Já possui uma conta? 
-                <Link href="/" style={{textDecoration:"none"}} sx={{color:'white'}} >
+                <Link href="/spaco-da-beleza" style={{textDecoration:"none"}} sx={{color:'white'}} >
                    Faça o login
                 </Link>
               </Grid>

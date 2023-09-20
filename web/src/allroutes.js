@@ -50,7 +50,7 @@ import Box from '@mui/material/Box';
               <Router>
               <Header/>
                   <Routes>
-                  <Route path="/" element={<Login/>}></Route>
+                  <Route path="/spaco-da-beleza" element={<Login/>}></Route>
                   <Route path="/cadastro" element={<Cadastro/>} />
                   {isAdm()}
                   </Routes>
