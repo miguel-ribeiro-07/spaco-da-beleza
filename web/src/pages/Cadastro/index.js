@@ -62,6 +62,7 @@ const Cadastro = () => {
                 <TextField
                   autoComplete="nome"
                   name="nome"
+                  disabled={components.disabled}
                   required
                   fullWidth
                   id="nome"
@@ -80,6 +81,7 @@ const Cadastro = () => {
               <Grid item xs={12}>
                 <TextField
                   required
+                  disabled={components.disabled}
                   fullWidth
                   id="email"
                   label="Email"
@@ -98,6 +100,7 @@ const Cadastro = () => {
               <Grid item xs={12}>
                 <TextField
                   required
+                  disabled={components.disabled}
                   fullWidth
                   id="telefone"
                   label="Telefone"
@@ -116,6 +119,7 @@ const Cadastro = () => {
               <Grid item xs={12}>
                 <TextField
                   required
+                  disabled={components.disabled}
                   fullWidth
                   name="senha"
                   label="Senha"
@@ -135,6 +139,7 @@ const Cadastro = () => {
               <Grid item xs={12}>
                 <TextField
                   required
+                  disabled={components.disabled}
                   fullWidth
                   select
                   typeof='number'
@@ -161,8 +166,12 @@ const Cadastro = () => {
               style={{backgroundColor: '#8936b3'}}
               fullWidth
               variant="contained"
+              disabled={components.disabled}
               sx={{ mt: 3, mb: 2 }}
-              onClick={() => save()}
+              onClick={() => {
+                setComponent('disabled', true)
+                save()
+              }}
             >
               Cadastrar
             </Button>
@@ -170,11 +179,15 @@ const Cadastro = () => {
               <Alert
                 variant="filled"
                 severity="success"
+                sx={{marginBottom:2}}
                 action={
                   <Button 
                   color="inherit" 
                   size="small" 
                   onClick={() => {setComponent('sucessSignUp', false)
+                  dispatch(updateCliente({
+                    components: {... components, disabled:true},
+                  }))
                   navigate('/')
                   }
                   }>

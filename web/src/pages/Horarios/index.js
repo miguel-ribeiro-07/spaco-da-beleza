@@ -249,7 +249,7 @@ const Horarios = () =>{
                         }
                       })}
                       options={activeServices}
-                      getOptionLabel={(option) => option.nomeServico}
+                      getOptionLabel={(option) => `${option.nomeServico} - Duração ${moment(option.duracao).format('HH:mm')} ${moment(option.duracao).format('HH:mm') === '00:30' ? 'min' : 'hrs'}`}
                       filterSelectedOptions                    
                       onChange={(event, value) => setHorario('servicosId' , value.map((e) => e._id))}
                       isOptionEqualToValue={(option, value) => option._id === value._id}

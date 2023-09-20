@@ -58,15 +58,16 @@ const Login = () => {
       navigate('/agendamentos')
       setClienteLogin('found', null)
       setComponent('notLogin', false)
+      window.location.reload()
     }else if(clientelogin.found === true){
       navigate('/agenda')
       setClienteLogin('found', null)
       setComponent('notLogin', false)
+      window.location.reload()
     }else if(clientelogin.found == false){
       setComponent('notLogin', true)
     }
   },[cltId, clientelogin.found])
-
 
   return (
     <div style={{ background: 'linear-gradient(to bottom, #ff4dff, #FFA2FF)', margin: '0px', height: '100vh', overflow:'hidden'}}>

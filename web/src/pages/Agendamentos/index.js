@@ -76,7 +76,6 @@ const Agendamentos = () =>{
         // eslint-disable-next-line
     }, [])
 
-    console.log(agendamento)
 
     return (
         <div className="col p-5 overflow-auto h-100">

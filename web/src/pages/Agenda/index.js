@@ -117,7 +117,6 @@ const Agenda = () => {
   }
 
   function ListDatas(arr) {
-    let i = 0
     if (form.error === true) {
       return <Typography variant="h5" component="h2" marginTop={0.5}>O proprietário não disponibilizou horários para esse serviço</Typography>
     } else{
@@ -158,10 +157,6 @@ const Agenda = () => {
         ));
       }
   }
-
-
-  console.log(agendamento)
-
 
   return (
       <Container component="main" maxWidth="xs">
