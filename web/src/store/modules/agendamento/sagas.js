@@ -1,8 +1,7 @@
 import {all, takeLatest, call, put, select} from 'redux-saga/effects'
 import api from '../../../services/api'
-import { updateAgendamento, getAgendamento, filterAgendamentos } from './actions'
+import { updateAgendamento, getAgendamento} from './actions'
 import types from './types'
-import moment from 'moment'
 
 export function* filterAgendamento({start, end}) {
     try{
@@ -35,7 +34,7 @@ export function* deleteAgendamento(){
         }
         
         yield put(getAgendamento({components: {...components, confirmDelete:false, modal:false}}))
-        yield put(filterAgendamentos(moment().weekday(0).format('YYYY-MM-DD'),moment().weekday(6).format('YYYY-MM-DD')))
+        window.location.reload()
 
     }catch(err){
         alert(err.message)
