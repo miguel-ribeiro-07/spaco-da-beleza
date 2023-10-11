@@ -31,3 +31,11 @@ export function resetCliente(){
 export function filterCliente(){
     return{type: types.FILTER_CLIENTE}
 }
+
+export function filterClienteMail(){
+    return{type: types.FILTER_CLIENTEMAIL}
+}
+
+export function updatePassword(){
+    return{type: types.UPDATE_PASSWORD}
+}

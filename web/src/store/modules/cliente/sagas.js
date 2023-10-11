@@ -121,11 +121,62 @@ export function* filterCliente() {
     }
 }
 
+export function* filterClienteMail() {
+    const {clientelogin, components} = yield select((state) => state.cliente)
+
+    try{
+        const {data:res} = yield call(api.post,'/cliente/filter', 
+        {
+            email: clientelogin.email
+        })
+
+        if (res.error){
+            alert(res.message)
+            return false
+        }
+
+        console.log(res)
+        if(res.localizado === false){
+            yield put(updateCliente({components: {...components, sucessSignUp:true}}))
+         } else{
+            yield put(updateCliente({components: {...components, sucessSignUp:false}}))
+            yield put(updateCliente({id:res.id}))
+         }
+
+         yield put(updateCliente({clientelogin:{...clientelogin, found:res.localizado}}))
+    }catch(err){
+        alert(err.message)
+    }
+}
+
+export function* updatePassword(){
+    const {id, components, clientelogin} = yield select((state) => state.cliente)
+
+    try{
+        const {data: res} = yield call(api.put, `/cliente/${id}`, 
+        {
+            senha:clientelogin.senha
+        })
+
+        if(res.error){
+            alert(res.message)
+            return false
+        }
+
+        yield put(updateCliente({components: {...components, sucessEdit:true, disabled:true}}))
+
+    }catch(err){
+        alert(err.message)
+    }
+}
+
 export default all([
     takeLatest(types.ALL_CLIENTES, allClientes),
     takeLatest(types.GET_CLIENTE, getCliente),
     takeLatest(types.ADD_CLIENTE, addCliente),
     takeLatest(types.DELETE_CLIENTE, deleteCliente),
     takeLatest(types.UPDATE_CLIENTEDB, updateClienteDB),
-    takeLatest(types.FILTER_CLIENTE, filterCliente)
+    takeLatest(types.FILTER_CLIENTE, filterCliente),
+    takeLatest(types.FILTER_CLIENTEMAIL, filterClienteMail),
+    takeLatest(types.UPDATE_PASSWORD, updatePassword)
 ])

@@ -13,6 +13,7 @@ import Collapse from '@mui/material/Collapse';
 import {useNavigate} from 'react-router-dom'
 import { MenuItem } from '@mui/material';
 import moment from 'moment'
+import '../../styles.css'
 
 
 
@@ -141,7 +142,7 @@ const CriarServico = () => {
               disabled={components.disabled}
               variant="contained"
               onClick={() => save()}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor: 'var(--secondary)' }}
             >
               Cadastrar serviço
             </Button>

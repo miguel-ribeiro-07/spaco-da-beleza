@@ -136,10 +136,15 @@ const Login = () => {
               Entrar
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
+              <Grid item marginTop={1}>
                 Não possui cadastro? 
                 <Link href="/cadastro" style={{textDecoration:"none"}} sx={{color:'white'}}>
-                Cadastre-se
+                Clique aqui
+                </Link>
+              </Grid>
+              <Grid item marginTop={5}>
+                <Link href="/redefinir-senha" style={{textDecoration:"none"}} sx={{color:'white'}}>
+                Esqueci minha senha
                 </Link>
               </Grid>
             </Grid>

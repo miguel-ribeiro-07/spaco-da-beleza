@@ -13,6 +13,7 @@ import Horarios from "./pages/Horarios"
 import EditarCliente from "./pages/EditarCliente/"
 import CriarServico from "./pages/CriarServico";
 import EditarServico from "./pages/EditarServico"
+import RedefinirSenha from "./pages/RedefinirSenha";
 import Cadastro from "./pages/Cadastro"
 import Agenda from "./pages/Agenda";
 import Box from '@mui/material/Box';
@@ -52,6 +53,7 @@ import Box from '@mui/material/Box';
                   <Routes>
                   <Route path="/spaco-da-beleza" element={<Login/>}></Route>
                   <Route path="/cadastro" element={<Cadastro/>} />
+                  <Route path="/redefinir-senha" element={<RedefinirSenha/>} />
                   {isAdm()}
                   </Routes>
               </Router>

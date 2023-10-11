@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -40,6 +41,11 @@ const Cadastro = () => {
       })
     )
   }
+
+  useEffect(() =>{
+    setComponent('disabled', false)
+  },[])
+
   return (
     <div style={{ background: 'linear-gradient(to bottom, #ff4dff, #FFA2FF)', margin: '0px', height: '100vh', overflow:'hidden'}}>
       <Container component="main" maxWidth="xs">
@@ -185,9 +191,6 @@ const Cadastro = () => {
                   color="inherit" 
                   size="small" 
                   onClick={() => {setComponent('sucessSignUp', false)
-                  dispatch(updateCliente({
-                    components: {... components, disabled:true},
-                  }))
                   navigate('/spaco-da-beleza')
                   }
                   }>
