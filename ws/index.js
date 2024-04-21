@@ -14,6 +14,7 @@ app.use(cors())
 app.set('port', 8000);
 
 //ROUTES
+
 app.use('/cliente', require('./src/routes/cliente.routes'))
 app.use('/servico', require('./src/routes/servico.routes'))
 app.use('/horario', require('./src/routes/horario.routes'))
