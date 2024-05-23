@@ -17,7 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import '../../styles.css'
 
 
-
+//Implement JWT Autentication
 const Clientes = () =>{
   
   const navigate = useNavigate()
