@@ -17,6 +17,7 @@ router.post('/', async(req, res) => {
     }
 })
 
+//MOSTRAR AGENDA PARA PROPRIETÁRIO
 router.post('/filter', async(req, res) =>{
     try{
         const {periodo} = req.body
